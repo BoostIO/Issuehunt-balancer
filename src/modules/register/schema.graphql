@@ -1,0 +1,13 @@
+
+type Error {
+  path: String!
+  message: String!
+}
+
+type Query {
+  bye: String
+}
+
+type Mutation {
+  register(name: String!, amount: Int!): [Error!]
+}
