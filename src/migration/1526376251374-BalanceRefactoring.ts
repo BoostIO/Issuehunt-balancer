@@ -1,3 +1,5 @@
+// TODO:: NOT COMPLETED YET
+
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm'
 
 export class BalanceRefactoring1526354141714 implements MigrationInterface {
