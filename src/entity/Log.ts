@@ -19,7 +19,3 @@ export class Log extends BaseEntity {
   @JoinColumn()
   balanceTransactions!: Balance[]
 }
-
-// repo:${repositoryGithubId}
-// issue:${repositoryGithubId}:${issueNumber}
-// user:${userGithubId}
