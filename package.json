@@ -1,5 +1,13 @@
 {
-  "author": "GUIEEN",
+   "author": {
+    "name" : "GUIEEN",
+    "email" : "guieenoutis@gmail.com"
+   },
+   "repository": {
+      "type": "git",
+      "url": "https://github.com/GUIEEN/balanceTest.git"
+   },
+   "license": "MIT",
    "name": "balancetestapi",
    "version": "0.0.1",
    "description": "API with TypeScript && TypeORM.",
@@ -10,7 +18,7 @@
       "@types/express-promise-router": "^2.0.0",
       "@types/joi": "^13.0.8",
       "@types/multer": "^1.3.6",
-      "@types/node": "^10.0.9",
+      "@types/node": "^10.1.0",
       "@types/rimraf": "^2.0.2",
       "rimraf": "^2.6.2",
       "routing-controllers": "^0.7.7",
