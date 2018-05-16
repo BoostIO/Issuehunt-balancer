@@ -4,50 +4,49 @@
     "type": "postgres",
     "host": "localhost",
     "port": 5432,
-    "username": "postgres",
+    "username": "guieenoutis",
     "password": "",
-    "database": "graphql-ts-server-boilerplate",
+    "database": "balance",
     "synchronize": true,
-    "logging": true,
+    "logging": false,
     "entities": [
-        "src/entity/**/*.ts"
+      "src/entity/**/*.ts"
     ],
     "migrations": [
-        "src/migration/**/*.ts"
+      "src/migration/**/*.ts"
     ],
     "subscribers": [
-        "src/subscriber/**/*.ts"
+      "src/subscriber/**/*.ts"
     ],
     "cli": {
-        "entitiesDir": "src/entity",
-        "migrationsDir": "src/migration",
-        "subscribersDir": "src/subscriber"
-    }
+      "entitiesDir": "src/entity",
+      "migrationsDir": "src/migration",
+      "subscribersDir": "src/subscriber"
+  }
   },
   {
     "name": "test",
     "type": "postgres",
     "host": "localhost",
     "port": 5432,
-    "username": "postgres",
+    "username": "guieenoutis",
     "password": "",
-    "database": "graphql-ts-server-boilerplate-test",
+    "database": "balance-test",
     "synchronize": true,
     "logging": false,
-    "dropSchema": true,
     "entities": [
-        "src/entity/**/*.ts"
+      "src/entity/**/*.ts"
     ],
     "migrations": [
-        "src/migration/**/*.ts"
+      "src/migration/**/*.ts"
     ],
     "subscribers": [
-        "src/subscriber/**/*.ts"
+      "src/subscriber/**/*.ts"
     ],
     "cli": {
-        "entitiesDir": "src/entity",
-        "migrationsDir": "src/migration",
-        "subscribersDir": "src/subscriber"
+      "entitiesDir": "src/entity",
+      "migrationsDir": "src/migration",
+      "subscribersDir": "src/subscriber"
     }
   }
 ]
