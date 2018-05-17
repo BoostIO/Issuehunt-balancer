@@ -10,15 +10,35 @@ export class BalanceRefactoring1526354141714 implements MigrationInterface {
         {
           name: 'id',
           type: 'string',
-          isPrimary: true
+          isPrimary: true,
+          generationStrategy: 'uuid',
+          isGenerated: true
         },
         {
           name: 'uniqueName',
-          type: 'varchar'
+          type: 'varchar',
+          isNullable: false,
+          isUnique: true
         },
         {
           name: 'amount',
-          type: 'int'
+          type: 'int',
+          isNullable: false
+        },
+        {
+          name: 'balanceTransaction',
+          type: 'string'
+        }
+      ],
+      uniques: [
+        {
+          columnNames: ['uniqueName']
+        }
+      ],
+      checks: [
+        {
+          columnNames: ['amount'],
+          expression: `"amount" > 0`
         }
       ]
     }), true)
