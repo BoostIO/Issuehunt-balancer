@@ -16,7 +16,7 @@ export class BalanceController {
   @Get('/balances')
   async getAll () {
     const balances: Balance[] = await getManager().find(Balance)
-    if (balances.length === 0) return new BalanceNotFound()
+    if (balances.length === 0) throw new BalanceNotFound()
     return balances
   }
 
@@ -26,7 +26,7 @@ export class BalanceController {
     if (error != null) return (new ClassValidationFail()).message = error.message
 
     const balance: Balance = await this.balanceRepository.findOne({ uniqueName: value })
-    if (balance == null) return new BalanceNotFound()
+    if (balance == null) throw new BalanceNotFound()
 
     return balance
   }
@@ -36,11 +36,11 @@ export class BalanceController {
   async createOne (@TransactionManager() manager: EntityManager, @Body() body: BalanceInterface): Promise<any> {
 
     const { error, value } = Joi.validate<BalanceInterface>(body, balanceBodySchema)
-    if (error != null) return (new ClassValidationFail()).message = error.message
+    if (error != null) throw (new ClassValidationFail()).message = error.message
     const { uniqueName, amount } = value
 
     const balance: Balance = await this.balanceRepository.findOne({ uniqueName })
-    if (balance != null) return new BalanceAlreadyExist()
+    if (balance != null) throw new BalanceAlreadyExist()
 
     const newBalance: Balance = this.balanceRepository.create({
       uniqueName,

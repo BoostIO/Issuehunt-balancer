@@ -17,21 +17,21 @@ export class LogController {
   @Get('/logs')
   async getAll () {
     const logs: Log[] = await getManager().find(Log)
-    if (logs.length === 0) return new LogNotFound()
+    if (logs.length === 0) throw new LogNotFound()
     return logs
   }
 
   @Get('/logs/sender/:uniqueName')
   async getSender (@Param('uniqueName') uniqueName: string) {
     const logs: Log[] = await this.logRepository.find({ sender: uniqueName })
-    if (logs.length === 0) return new LogNotFound()
+    if (logs.length === 0) throw new LogNotFound()
     return logs
   }
 
   @Get('/logs/receiver/:uniqueName')
   async getReceiver (@Param('uniqueName') uniqueName: string) {
     const logs: Log[] = await this.logRepository.find({ receiver: uniqueName })
-    if (logs.length === 0) return new LogNotFound()
+    if (logs.length === 0) throw new LogNotFound()
     return logs
   }
 
@@ -39,14 +39,14 @@ export class LogController {
   @Transaction()
   async createLog (@TransactionManager() manager: EntityManager, @Body() body: LogInterface): Promise<any> {
     const { error, value } = Joi.validate<LogInterface>(body, logBodySchema)
-    if (error != null) return (new ClassValidationFail()).message = error.message
+    if (error != null) throw (new ClassValidationFail()).message = error.message
     const validatedSenderId = value.sender
     const validatedReceiverId = value.receiver
     const validatedAmount = value.amount
 
     const sender: Balance = await this.balanceRepository.findOne({ uniqueName: validatedSenderId })
     const receiver: Balance = await this.balanceRepository.findOne({ uniqueName: validatedReceiverId })
-    if (sender == null || receiver == null) return new BalanceNotFound()
+    if (sender == null || receiver == null) throw new BalanceNotFound()
 
     sender.amount = sender.amount - validatedAmount
     receiver.amount = receiver.amount + validatedAmount
