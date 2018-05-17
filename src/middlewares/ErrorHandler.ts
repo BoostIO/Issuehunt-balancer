@@ -5,7 +5,10 @@ import { Middleware, ExpressErrorMiddlewareInterface } from 'routing-controllers
 export class CustomErrorHandler implements ExpressErrorMiddlewareInterface {
 
   error (error: any, request: any, response: any, next: express.NextFunction) {
-    console.log('Error occured. Something is wrong.')
+    if (error.status === 404) {
+      console.log('Controller error occured')
+    }
+    console.log('No value is returned in the controller, which means probably using not registered routes')
     next()
   }
 

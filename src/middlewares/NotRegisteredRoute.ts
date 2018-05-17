@@ -1,12 +1,13 @@
-import express from 'express'
-import { Middleware, ExpressErrorMiddlewareInterface } from 'routing-controllers'
+import { NextFunction, Request, Response } from 'express'
+import { Middleware, ExpressMiddlewareInterface } from 'routing-controllers'
 
 @Middleware({ type: 'after' })
-export class NotRegisteredRoute implements ExpressErrorMiddlewareInterface {
+export class NotRegisteredRoute implements ExpressMiddlewareInterface {
 
-  error (error: any, request: any, response: any, next: express.NextFunction) {
-    console.log('Error occured. Something is wrong.')
-    next()
+  public use (req: Request, res: Response, next?: NextFunction): void {
+    if (!res.headersSent) {
+      throw new Error('API does not exist')
+    }
   }
 
 }
