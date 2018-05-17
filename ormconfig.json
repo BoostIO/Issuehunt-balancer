@@ -7,7 +7,7 @@
     "username": "guieenoutis",
     "password": "",
     "database": "balance",
-    "synchronize": true,
+    "synchronize": false,
     "logging": false,
     "entities": [
       "src/entity/**/*.ts"
@@ -15,6 +15,7 @@
     "migrations": [
       "src/migration/**/*.ts"
     ],
+    "migrationsTableName": "custom_migration_table",
     "subscribers": [
       "src/subscriber/**/*.ts"
     ],
@@ -32,7 +33,7 @@
     "username": "guieenoutis",
     "password": "",
     "database": "balance-test",
-    "synchronize": true,
+    "synchronize": false,
     "logging": false,
     "entities": [
       "src/entity/**/*.ts"
@@ -40,6 +41,7 @@
     "migrations": [
       "src/migration/**/*.ts"
     ],
+    "migrationsTableName": "custom_migration_table",
     "subscribers": [
       "src/subscriber/**/*.ts"
     ],
