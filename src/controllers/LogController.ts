@@ -3,11 +3,11 @@ import { Log } from '../entity/Log'
 import { Controller, Param, Get, Post, Body } from 'routing-controllers'
 import { Balance } from '../entity/Balance'
 import { LogInterface } from '../lib/types'
-import BalanceNotFound from '../errors/BalanceNotFound'
+import BalanceNotFound from '../lib/errors/BalanceNotFound'
 import Joi from 'joi'
 import { logBodySchema } from '../constraints/schemas'
-import ClassValidationFail from '../errors/ClassValidationFail'
-import LogNotFound from '../errors/LogNotFound'
+import ClassValidationFail from '../lib/errors/ClassValidationFail'
+import LogNotFound from '../lib/errors/LogNotFound'
 
 @Controller()
 export class LogController {

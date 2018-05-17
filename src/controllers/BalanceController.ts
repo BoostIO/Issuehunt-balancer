@@ -2,11 +2,11 @@ import { getManager, getRepository, Transaction, TransactionManager, EntityManag
 import { Balance } from '../entity/Balance'
 import { Controller, Param, Get, Post, Body } from 'routing-controllers'
 import { BalanceInterface } from '../lib/types'
-import BalanceAlreadyExist from '../errors/BalanceAlreadyExist'
-import ClassValidationFail from '../errors/ClassValidationFail'
+import BalanceAlreadyExist from '../lib/errors/BalanceAlreadyExist'
+import ClassValidationFail from '../lib/errors/ClassValidationFail'
 import Joi from 'joi'
 import { balanceBodySchema, uniqueNameSchema } from '../constraints/schemas'
-import BalanceNotFound from '../errors/BalanceNotFound'
+import BalanceNotFound from '../lib/errors/BalanceNotFound'
 
 @Controller()
 export class BalanceController {
