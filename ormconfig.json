@@ -15,7 +15,7 @@
     "migrations": [
       "src/migration/**/*.ts"
     ],
-    "migrationsTableName": "custom_migration_table",
+    "migrationsTableName": "migration_tracks",
     "subscribers": [
       "src/subscriber/**/*.ts"
     ],
