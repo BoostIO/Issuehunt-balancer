@@ -8,7 +8,7 @@ export class CustomErrorHandler implements ExpressErrorMiddlewareInterface {
     if (error.status === 404) {
       console.log('Controller error occured')
     }
-    console.log('No value is returned in the controller, which means probably using not registered routes')
+    console.log('No value is returned from the controller. Probably occured by not using the registered routes')
     next()
   }
 
