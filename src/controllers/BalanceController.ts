@@ -1,7 +1,7 @@
-import { getManager, getRepository, Transaction, TransactionManager, EntityManager, Repository } from 'typeorm'
+import { getManager, Transaction, TransactionManager, EntityManager, Repository } from 'typeorm'
 import { Balance } from '../entity/Balance'
 import { Controller, Param, Get, Post, Body } from 'routing-controllers'
-import { BalanceInterface } from '../lib/types'
+import { BalanceBodyInterface } from '../lib/types'
 import BalanceAlreadyExist from '../lib/errors/BalanceAlreadyExist'
 import ClassValidationFail from '../lib/errors/ClassValidationFail'
 import Joi from 'joi'
@@ -11,7 +11,11 @@ import BalanceNotFound from '../lib/errors/BalanceNotFound'
 @Controller()
 export class BalanceController {
 
-  private balanceRepository: Repository<Balance> = getRepository(Balance)
+  private balanceRepository: Repository<Balance>
+
+  constructor () {
+    this.balanceRepository = getManager().getRepository(Balance)
+  }
 
   @Get('/balances')
   async getAll () {
@@ -33,11 +37,12 @@ export class BalanceController {
 
   @Post('/balances')
   @Transaction()
-  async createOne (@TransactionManager() manager: EntityManager, @Body() body: BalanceInterface): Promise<any> {
+  async createOne (@TransactionManager() manager: EntityManager, @Body() body: BalanceBodyInterface): Promise<any> {
 
-    const { error, value } = Joi.validate<BalanceInterface>(body, balanceBodySchema)
+    const { error, value } = Joi.validate<BalanceBodyInterface>(body, balanceBodySchema)
     if (error != null) throw (new ClassValidationFail()).message = error.message
-    const { uniqueName, amount } = value
+    let { uniqueName, amount } = value
+    amount = parseInt(`${amount}`, 10)
 
     const balance: Balance = await this.balanceRepository.findOne({ uniqueName })
     if (balance != null) throw new BalanceAlreadyExist()
