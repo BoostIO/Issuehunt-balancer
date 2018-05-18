@@ -7,7 +7,7 @@ export class BalanceRefactoring1526354141714 implements MigrationInterface {
       columns: [
         {
           name: 'id',
-          type: 'integer', // postgresql, mysql
+          type: 'bigint', // postgresql, mysql
           isPrimary: true,
           isGenerated: true,
           generationStrategy: 'increment'
@@ -37,7 +37,7 @@ export class BalanceRefactoring1526354141714 implements MigrationInterface {
       columns: [
         {
           name: 'id',
-          type: 'integer', // postgresql, mysql
+          type: 'bigint', // postgresql, mysql
           // postgresql, mysql = uuid : varchar
           // https://github.com/typeorm/typeorm/blob/ba5d0aa485a5e260fa6a5399e0b6fe4cb1601012/src/driver/mysql/MysqlDriver.ts#L464
           // https://github.com/typeorm/typeorm/blob/ba5d0aa485a5e260fa6a5399e0b6fe4cb1601012/src/driver/postgres/PostgresDriver.ts#L294
