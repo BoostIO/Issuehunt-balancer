@@ -1,10 +1,10 @@
-import { Entity, Column, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, JoinColumn, OneToMany } from 'typeorm'
+import { Entity, Column, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm'
 import { Balance } from './Balance'
 
 @Entity('log')
 export class Log extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id!: string
+  @PrimaryGeneratedColumn('increment')
+  id!: number
 
   @Column('varchar', { length: 255 })
   sender!: string
@@ -15,7 +15,6 @@ export class Log extends BaseEntity {
   @CreateDateColumn()
   createdDate!: Date
 
-  @OneToMany(type => Balance, balance => balance.balanceTransaction)
-  @JoinColumn()
-  balanceTransactions!: Balance[]
+  @OneToMany(type => Balance, balance => balance.log)
+  balances!: Balance[]
 }
