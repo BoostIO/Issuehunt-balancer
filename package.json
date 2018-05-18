@@ -40,8 +40,9 @@
    },
    "scripts": {
       "start": "NODE_ENV=development nodemon --exec ts-node src/runServer.ts",
-      "create-migration": "NODE_ENV=development npx ts-node ./node_modules/.bin/typeorm migration:generate -c development -n Test",
-      "run-migration": "NODE_ENV=development npx ts-node ./node_modules/.bin/typeorm migration:run -c development",
-      "revert-migration": "NODE_ENV=development npx ts-node ./node_modules/.bin/typeorm migration:revert -c development"
+      "create-migration": "NODE_ENV=mig npx ts-node ./node_modules/.bin/typeorm migration:generate -c mig -n Test",
+      "run-migration": "NODE_ENV=mig npx ts-node ./node_modules/.bin/typeorm migration:run -c mig",
+      "revert-migration": "NODE_ENV=mig npx ts-node ./node_modules/.bin/typeorm migration:revert -c mig",
+      "start-on-mig-env": "NODE_ENV=mig nodemon --exec ts-node src/runServer.ts"
    }
 }

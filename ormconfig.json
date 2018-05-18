@@ -7,6 +7,32 @@
     "username": "guieenoutis",
     "password": "",
     "database": "balance",
+    "synchronize": true,
+    "logging": false,
+    "entities": [
+      "src/entity/**/*.ts"
+    ],
+    "migrations": [
+      "src/migration/**/*.ts"
+    ],
+    "migrationsTableName": "migration_logs",
+    "subscribers": [
+      "src/subscriber/**/*.ts"
+    ],
+    "cli": {
+      "entitiesDir": "src/entity",
+      "migrationsDir": "src/migration",
+      "subscribersDir": "src/subscriber"
+    }
+  },
+  {
+    "name": "mig",
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "guieenoutis",
+    "password": "",
+    "database": "balance-mig",
     "synchronize": false,
     "logging": false,
     "entities": [
@@ -15,7 +41,7 @@
     "migrations": [
       "src/migration/**/*.ts"
     ],
-    "migrationsTableName": "migration_tracks",
+    "migrationsTableName": "migration_logs",
     "subscribers": [
       "src/subscriber/**/*.ts"
     ],
@@ -23,7 +49,7 @@
       "entitiesDir": "src/entity",
       "migrationsDir": "src/migration",
       "subscribersDir": "src/subscriber"
-  }
+    }
   },
   {
     "name": "test",
