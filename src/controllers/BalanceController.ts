@@ -1,4 +1,4 @@
-import { getManager, Transaction, TransactionManager, EntityManager, Repository } from 'typeorm'
+import { getManager, Transaction, TransactionManager, EntityManager, Repository, getRepository } from 'typeorm'
 import { Balance } from '../entity/Balance'
 import { Controller, Param, Get, Post, Body } from 'routing-controllers'
 import { BalanceBodyInterface } from '../lib/types'
@@ -14,7 +14,7 @@ export class BalanceController {
   private balanceRepository: Repository<Balance>
 
   constructor () {
-    this.balanceRepository = getManager().getRepository(Balance)
+    this.balanceRepository = getRepository(Balance)
   }
 
   @Get('/balances')
@@ -29,7 +29,7 @@ export class BalanceController {
     const { error, value } = Joi.validate<any>(uniqueName, uniqueNameSchema)
     if (error != null) return (new ClassValidationFail()).message = error.message
 
-    const balance: Balance = await this.balanceRepository.findOne({ uniqueName: value })
+    const balance: Balance = await getRepository(Balance).findOne({ uniqueName: value })
     if (balance == null) throw new BalanceNotFound()
 
     return balance
@@ -45,7 +45,9 @@ export class BalanceController {
     amount = parseInt(`${amount}`, 10)
 
     const balance: Balance = await this.balanceRepository.findOne({ uniqueName })
-    if (balance != null) throw new BalanceAlreadyExist()
+    if (balance != null) {
+      throw new BalanceAlreadyExist()
+    }
 
     const newBalance: Balance = this.balanceRepository.create({
       uniqueName,
