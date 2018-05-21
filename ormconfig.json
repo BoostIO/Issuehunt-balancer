@@ -59,7 +59,7 @@
     "username": "guieenoutis",
     "password": "",
     "database": "balance-test",
-    "synchronize": false,
+    "synchronize": true,
     "logging": false,
     "entities": [
       "src/entity/**/*.ts"
