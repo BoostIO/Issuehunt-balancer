@@ -3,7 +3,7 @@ import Joi from 'joi'
 // repo:${repositoryGithubId}
 // issue:${repositoryGithubId}:${issueNumber}
 // user:${userGithubId}
-export const uniqueNameSchema: Joi.SchemaLike = Joi.string().regex(/^([1-9]+)(\/[1-9]+)?$/).required()
+export const uniqueNameSchema: Joi.SchemaLike = Joi.string().regex(/^([1-9]+)(\:[1-9]+)?$/).required()
 
 export const balanceBodySchema = Joi.object()
   .keys({
