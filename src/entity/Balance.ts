@@ -2,7 +2,7 @@ import { Entity, Column, BaseEntity, PrimaryGeneratedColumn, Check, ManyToOne } 
 import { Log } from './Log'
 
 @Entity('balance')
-@Check(`"amount" > 0`)
+@Check(`"amount" >= 0`)
 export class Balance extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id!: number
