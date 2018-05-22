@@ -55,6 +55,19 @@ describe('Test a Balance controller', () => {
     })
   })
 
+  it('register a balance with improper uniqueName', async () => {
+    await chai.request(app)
+    .post('/balances')
+    .send({
+      uniqueName: '11-_;111',
+      amount: 1
+    })
+    .then(function (res) {
+      expect(res.status).toEqual(404)
+      expect(res.text).toEqual('child \"uniqueName\" fails because [\"uniqueName\" with value \"11-_;111\" fails to match the required pattern: /^([1-9]+)(\\:[1-9]+)?$/]')
+    })
+  })
+
   it('register a balance with negative integer amount', async () => {
     await chai.request(app)
     .post('/balances')
