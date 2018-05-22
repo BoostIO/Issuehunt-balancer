@@ -1,16 +1,13 @@
-class BalanceAlreadyExist extends Error {
-  constructor (...args: any[]) {
-    super(...args)
-    Object.defineProperty(this, 'name', {
-      value: this.constructor.name
-    })
-    Object.defineProperty(this, 'status', {
-      value: 404
-    })
+import { HttpError } from 'routing-controllers'
 
-    if (this.message == null || this.message.length === 0) {
-      this.message = 'Balance is already registered'
-    }
+class BalanceAlreadyExist extends HttpError {
+  name = 'BalanceAlreadyExist'
+  constructor (message?: string) {
+    super(404)
+    this.stack = null
+    message == null ?
+        this.message = 'Balance is already registered' :
+        this.message = message
   }
 }
 

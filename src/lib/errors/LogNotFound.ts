@@ -1,16 +1,13 @@
-class LogNotFound extends Error {
-  constructor (...args: any[]) {
-    super(...args)
-    Object.defineProperty(this, 'name', {
-      value: this.constructor.name
-    })
-    Object.defineProperty(this, 'status', {
-      value: 404
-    })
+import { HttpError } from 'routing-controllers'
 
-    if (this.message == null || this.message.length === 0) {
-      this.message = 'Balance does not exist. Create a Balance first'
-    }
+class LogNotFound extends HttpError {
+  name = 'LogNotFound'
+  constructor (message?: string) {
+    super(404)
+    this.stack = null
+    message == null ?
+        this.message = 'Log does not exist. Create a Balance first' :
+        this.message = message
   }
 }
 

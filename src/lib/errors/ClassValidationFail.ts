@@ -1,16 +1,13 @@
-class ClassValidationFail extends Error {
-  constructor (...args: any[]) {
-    super(...args)
-    Object.defineProperty(this, 'name', {
-      value: this.constructor.name
-    })
-    Object.defineProperty(this, 'status', {
-      value: 404
-    })
+import { HttpError } from 'routing-controllers'
 
-    if (this.message == null || this.message.length === 0) {
-      this.message = 'Class Validation Fails'
-    }
+class ClassValidationFail extends HttpError {
+  name = 'ClassValidationFail'
+  constructor (message?: string) {
+    super(404)
+    this.stack = null
+    message == null ?
+        this.message = 'Class Validation Fails' :
+        this.message = message
   }
 }
 
