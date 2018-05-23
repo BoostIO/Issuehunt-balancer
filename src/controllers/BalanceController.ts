@@ -11,14 +11,14 @@ import BalanceNotFound from '../lib/errors/BalanceNotFound'
 @Controller()
 export class BalanceController {
 
-  @Get('/balances')
+  @Get('/balances/')
   async getAll () {
     const balances: Balance[] = await getManager().find(Balance)
     if (balances.length === 0) throw new BalanceNotFound()
     return balances
   }
 
-  @Get('/balances/:uniqueName')
+  @Get('/balances/:uniqueName/')
   async getOne (@Param('uniqueName') uniqueName: string) {
     const { error, value } = Joi.validate<any>(uniqueName, uniqueNameSchema)
     if (error != null) return (new ClassValidationFail()).message = error.message
@@ -29,7 +29,7 @@ export class BalanceController {
     return balance
   }
 
-  @Post('/balances')
+  @Post('/balances/')
   @Transaction()
   async createOne (@TransactionManager() manager: EntityManager, @Body() body: BalanceBodyInterface): Promise<any> {
 
