@@ -6,7 +6,7 @@ class LogNotFound extends HttpError {
     super(404)
     this.stack = null
     message == null ?
-        this.message = 'Log does not exist. Create a Balance first' :
+        this.message = 'Log does not exist. Create a Log first' :
         this.message = message
   }
 }
