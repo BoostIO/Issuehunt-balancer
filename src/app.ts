@@ -11,6 +11,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
 useExpressServer(app, {
+  defaultErrorHandler: false,
   controllers: [
     BalanceController,
     LogController
