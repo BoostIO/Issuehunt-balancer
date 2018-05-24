@@ -6,7 +6,7 @@ describe('Access to not registered routes', () => {
   beforeEach(dbLib.connectDB)
   afterEach(dbLib.initializeEntityID)
 
-  it('not registered route', async () => {
+  it('does not registered route', async () => {
     const result = await chai.request(app)
       .get('/notRegisteredRoute')
 
