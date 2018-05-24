@@ -4,11 +4,9 @@ import { Middleware, ExpressMiddlewareInterface, HttpError } from 'routing-contr
 @Middleware({ type: 'after' })
 export class NotRegisteredRoute implements ExpressMiddlewareInterface {
 
-  public use (req: Request, res: Response, next?: NextFunction): void {
+  public use (req: Request, res: Response, next?: NextFunction): any {
     if (!res.headersSent) {
-      const e = new HttpError(404, 'API does not exist')
-      e.stack = null
-      throw e
+      throw new HttpError(404, 'API does not exist')
     }
   }
 
