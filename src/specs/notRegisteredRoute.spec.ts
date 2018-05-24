@@ -7,11 +7,14 @@ describe('Access to not registered routes', () => {
   afterEach(dbLib.dropDB)
 
   it('not registered route', async () => {
-    await chai.request(app)
+    const result = await chai.request(app)
       .get('/notRegisteredRoute')
-      .then((res) => {
-        expect(res.status).toEqual(404)
-        expect(res.text).toEqual('API does not exist')
+
+    expect(result.status).toEqual(404)
+    expect(JSON.parse(result.text))
+      .toEqual({
+        'message': 'API does not exist', 'name': 'Error', 'status': 404
       })
+
   })
 })
