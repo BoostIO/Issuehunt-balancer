@@ -4,7 +4,7 @@ import app from '../app'
 
 describe('Access to not registered routes', () => {
   beforeEach(dbLib.connectDB)
-  afterEach(dbLib.dropDB)
+  afterEach(dbLib.initializeEntityID)
 
   it('not registered route', async () => {
     const result = await chai.request(app)
