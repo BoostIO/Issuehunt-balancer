@@ -11,28 +11,28 @@ import LogNotFound from '../lib/errors/LogNotFound'
 
 @Controller()
 export class LogController {
-  @Get('/logs/')
+  @Get('/logs')
   async getAll () {
     const logs: Log[] = await getManager().find(Log)
     if (logs.length === 0) throw new LogNotFound()
     return logs
   }
 
-  @Get('/logs/sender/:uniqueName/')
+  @Get('/logs/sender/:uniqueName')
   async getSender (@Param('uniqueName') uniqueName: string) {
     const logs: Log[] = await getRepository(Log).find({ sender: uniqueName })
     if (logs.length === 0) throw new LogNotFound()
     return logs
   }
 
-  @Get('/logs/receiver/:uniqueName/')
+  @Get('/logs/receiver/:uniqueName')
   async getReceiver (@Param('uniqueName') uniqueName: string) {
     const logs: Log[] = await getRepository(Log).find({ receiver: uniqueName })
     if (logs.length === 0) throw new LogNotFound()
     return logs
   }
 
-  @Post('/logs/transfer/')
+  @Post('/logs/transfer')
   @Transaction()
   async createLog (@TransactionManager() manager: EntityManager, @Body() body: LogBodyInterface): Promise<any> {
     const { error, value } = Joi.validate<LogBodyInterface>(body, logBodySchema)
