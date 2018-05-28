@@ -63,4 +63,16 @@ export class LogController {
 
     return manager.save(log)
   }
+
+  @Post('/logs/delete/:logId')
+  @Transaction()
+  async deleteLog (@TransactionManager() manager: EntityManager, @Param('logId') logId: number): Promise<any> {
+    const { error, value } = Joi.validate(logId, Joi.number().positive().required())
+    if (error != null) throw new ClassValidationFail()
+    
+    const selectedLog = await getRepository(Log).findOne({ id: value })
+    if (selectedLog == null) throw new LogNotFound()
+
+    return getRepository(Log).delete(selectedLog)
+  }
 }

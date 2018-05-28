@@ -5,7 +5,7 @@ import { BalanceBodyInterface } from '../lib/types'
 import BalanceAlreadyExist from '../lib/errors/BalanceAlreadyExist'
 import ClassValidationFail from '../lib/errors/ClassValidationFail'
 import Joi from 'joi'
-import { balanceBodySchema, uniqueNameSchema } from '../constraints/schemas'
+import { balanceBodySchema, uniqueNameSchema, uniqueNameSchemaLike } from '../constraints/schemas'
 import BalanceNotFound from '../lib/errors/BalanceNotFound'
 
 @Controller()
@@ -20,7 +20,7 @@ export class BalanceController {
 
   @Get('/balances/:uniqueName')
   async getOne (@Param('uniqueName') uniqueName: string) {
-    const { error, value } = Joi.validate<any>(uniqueName, uniqueNameSchema)
+    const { error, value } = Joi.validate<any>(uniqueName, uniqueNameSchemaLike)
     if (error != null) return (new ClassValidationFail()).message = error.message
 
     const balance: Balance = await getRepository(Balance).findOne({ uniqueName: value })
@@ -48,5 +48,19 @@ export class BalanceController {
     })
 
     return manager.save(newBalance)
+  }
+
+  @Post('/balances/delete')
+  @Transaction()
+  async deleteOne (@TransactionManager() manager: EntityManager, @Body() body: BalanceBodyInterface): Promise<any> {
+    const { error, value } = Joi.validate(body, uniqueNameSchema)
+
+    if (error != null) throw new ClassValidationFail(error.message)
+    let { uniqueName } = value
+
+    const balance: Balance = await getRepository(Balance).findOne({ uniqueName })
+    if (balance == null) throw new BalanceNotFound()
+
+    return getRepository(Balance).delete(balance)
   }
 }
