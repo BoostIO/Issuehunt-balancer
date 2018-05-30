@@ -78,7 +78,7 @@ describe('Log controller', () => {
     )
   })
 
-  it('registers a log when the negative balance is triggered', async () => {
+  it('throw error when the negative balance is triggered', async () => {
     const balanceRepository: Repository<Balance> = getManager().getRepository(Balance)
     const balance: Balance = balanceRepository.create({
       uniqueName: '11:111',
@@ -110,7 +110,7 @@ describe('Log controller', () => {
 
   })
 
-  it('registers a log when the decimal balance is triggered', async () => {
+  it('throw error when the decimal balance is triggered', async () => {
     const balanceRepository: Repository<Balance> = getManager().getRepository(Balance)
     const balance: Balance = balanceRepository.create({
       uniqueName: '11:111',
