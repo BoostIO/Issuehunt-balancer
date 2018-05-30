@@ -9,3 +9,4 @@ const runServer = async () => {
 }
 
 runServer()
+  .catch(e => console.log(e))
