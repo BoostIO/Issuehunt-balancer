@@ -10,6 +10,39 @@ describe('Log controller', () => {
   beforeAll(dbLib.connectDB)
   afterEach(dbLib.initializeEntityID)
 
+  it('delete a balance', async () => {
+    const balanceRepository: Repository<Balance> = getManager().getRepository(Balance)
+    const balance: Balance = balanceRepository.create({
+      uniqueName: '11:111',
+      amount: 100
+    })
+    const balance2: Balance = balanceRepository.create({
+      uniqueName: '22:222',
+      amount: 200
+    })
+
+    await getManager().transaction(async transactionalEntityManager => {
+      await transactionalEntityManager.save(balance)
+      await transactionalEntityManager.save(balance2)
+    })
+
+    const log = await chai.request(app)
+      .post('/logs/transfer')
+      .send({
+        sender: '11:111',
+        receiver: '22:222',
+        amount: 100
+      })
+
+    const result = await chai.request(app)
+      .post(`/logs/delete/${JSON.parse(log.text).id}`)
+
+    expect(result.status).toEqual(200)
+    expect(JSON.parse(result.text)).toEqual({
+      raw: []
+    })
+  })
+
   it('registers a log', async () => {
     const balanceRepository: Repository<Balance> = getManager().getRepository(Balance)
     const balance: Balance = balanceRepository.create({

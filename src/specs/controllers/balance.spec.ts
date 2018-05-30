@@ -10,6 +10,26 @@ describe('Balance controller', () => {
   beforeAll(dbLib.connectDB)
   afterEach(dbLib.initializeEntityID)
 
+  it('delete a balance', async () => {
+    await chai.request(app)
+      .post('/balances')
+      .send({
+        uniqueName: '11:111',
+        amount: 100
+      })
+
+    const result = await chai.request(app)
+      .post('/balances/delete')
+      .send({
+        uniqueName: '11:111'
+      })
+
+    expect(result.status).toEqual(200)
+    expect(JSON.parse(result.text)).toEqual({
+      raw: []
+    })
+  })
+
   it('registers a balance', async () => {
     const result = await chai.request(app)
       .post('/balances')
@@ -26,7 +46,7 @@ describe('Balance controller', () => {
     })
   })
 
-  it('registers a balance twice with same uniqueName', async () => {
+  it('throw error when balance is registered twice with same uniqueName', async () => {
     await chai.request(app)
       .post('/balances')
       .send({
@@ -49,7 +69,7 @@ describe('Balance controller', () => {
     )
   })
 
-  it('registers a balance with improper uniqueName', async () => {
+  it('throw error when registers a balance with improper uniqueName', async () => {
     const result = await chai.request(app)
       .post('/balances')
       .send({
@@ -66,7 +86,7 @@ describe('Balance controller', () => {
 
   })
 
-  it('registers a balance with negative integer amount', async () => {
+  it('throw error when registers a balance with negative integer amount', async () => {
     const result = await chai.request(app)
       .post('/balances')
       .send({
@@ -83,7 +103,7 @@ describe('Balance controller', () => {
 
   })
 
-  it('registers a balance of decimal amount', async () => {
+  it('throw error when registers a balance of decimal amount', async () => {
     const result = await chai.request(app)
       .post('/balances')
       .send({
@@ -100,7 +120,7 @@ describe('Balance controller', () => {
 
   })
 
-  it('finds a not registered balance', async () => {
+  it('throw error when finds a not registered balance', async () => {
     const result = await chai.request(app)
       .get('/balances/11:111')
 
