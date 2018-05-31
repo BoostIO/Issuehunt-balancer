@@ -1,13 +1,13 @@
 import { HttpError } from 'routing-controllers'
 
-class ClassValidationFail extends HttpError {
-  name = 'ClassValidationFail'
+class ValidationError extends HttpError {
+  name = 'ValidationError'
   constructor (message?: string) {
-    super(400) // Bad Request
+    super(422) // Bad Request
     message == null ?
         this.message = 'Class Validation Fails' :
         this.message = message
   }
 }
 
-export default ClassValidationFail
+export default ValidationError
