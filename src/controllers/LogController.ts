@@ -73,6 +73,7 @@ export class LogController {
     const selectedLog = await getRepository(Log).findOne({ id: value })
     if (selectedLog == null) throw new LogNotFound()
 
-    return getRepository(Log).delete(selectedLog)
+    await getRepository(Log).delete(selectedLog)
+    return { deleted: true }
   }
 }

@@ -61,6 +61,7 @@ export class BalanceController {
     const balance: Balance = await getRepository(Balance).findOne({ uniqueName })
     if (balance == null) throw new BalanceNotFound()
 
-    return getRepository(Balance).delete(balance)
+    await getRepository(Balance).delete(balance)
+    return { deleted: true }
   }
 }

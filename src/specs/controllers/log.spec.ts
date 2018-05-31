@@ -39,7 +39,7 @@ describe('Log controller', () => {
 
     expect(result.status).toEqual(200)
     expect(JSON.parse(result.text)).toEqual({
-      raw: []
+      deleted: true
     })
   })
 
