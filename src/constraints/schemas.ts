@@ -4,23 +4,22 @@ import Joi from 'joi'
 // repo:${repositoryGithubId}
 // issue:${repositoryGithubId}:${issueNumber}
 // user:${userGithubId}
+export const UniqueNameConstraint: Joi.SchemaLike = Joi.string().regex(/^([1-9]+)(\:[1-9]+)?$/).required()
 
-export const uniqueNameSchemaLike: Joi.SchemaLike = Joi.string().regex(/^([1-9]+)(\:[1-9]+)?$/).required()
-
-export const uniqueNameSchema = Joi.object()
+export const BalanceDeleteBodySchema = Joi.object()
   .keys({
-    uniqueName: uniqueNameSchemaLike
+    uniqueName: UniqueNameConstraint
   })
 
-export const balanceBodySchema = Joi.object()
+export const BalanceCreateBodySchema = Joi.object()
   .keys({
-    uniqueName: uniqueNameSchemaLike,
+    uniqueName: UniqueNameConstraint,
     amount: Joi.number().min(1).integer().positive().required()
   })
 
-export const logBodySchema = Joi.object()
+export const LogCreateBodySchema = Joi.object()
   .keys({
-    sender: uniqueNameSchemaLike,
-    receiver: uniqueNameSchemaLike,
+    sender: UniqueNameConstraint,
+    receiver: UniqueNameConstraint,
     amount: Joi.number().min(1).integer().positive().required()
   })
