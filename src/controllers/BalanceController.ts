@@ -3,9 +3,9 @@ import { Balance } from '../entity/Balance'
 import { Controller, Param, Get, Post, Body } from 'routing-controllers'
 import { BalanceBodyInterface } from '../lib/types'
 import BalanceAlreadyExist from '../lib/errors/BalanceAlreadyExist'
-import ClassValidationFail from '../lib/errors/ClassValidationFail'
+import ValidationError from '../lib/errors/ValidationError'
 import Joi from 'joi'
-import { balanceBodySchema, uniqueNameSchema, uniqueNameSchemaLike } from '../constraints/schemas'
+import { BalanceCreateBodySchema, BalanceDeleteBodySchema, UniqueNameConstraint } from '../constraints/schemas'
 import BalanceNotFound from '../lib/errors/BalanceNotFound'
 
 @Controller()
@@ -20,8 +20,8 @@ export class BalanceController {
 
   @Get('/balances/:uniqueName')
   async getOne (@Param('uniqueName') uniqueName: string) {
-    const { error, value } = Joi.validate<any>(uniqueName, uniqueNameSchemaLike)
-    if (error != null) return (new ClassValidationFail()).message = error.message
+    const { error, value } = Joi.validate<any>(uniqueName, UniqueNameConstraint)
+    if (error != null) return (new ValidationError()).message = error.message
 
     const balance: Balance = await getRepository(Balance).findOne({ uniqueName: value })
     if (balance == null) throw new BalanceNotFound()
@@ -33,9 +33,9 @@ export class BalanceController {
   @Transaction()
   async createOne (@TransactionManager() manager: EntityManager, @Body() body: BalanceBodyInterface): Promise<any> {
 
-    const { error, value } = Joi.validate<BalanceBodyInterface>(body, balanceBodySchema)
+    const { error, value } = Joi.validate<BalanceBodyInterface>(body, BalanceCreateBodySchema)
 
-    if (error != null) throw new ClassValidationFail(error.message)
+    if (error != null) throw new ValidationError(error.message)
     let { uniqueName, amount } = value
     amount = parseInt(`${amount}`, 10)
 
@@ -53,9 +53,9 @@ export class BalanceController {
   @Post('/balances/delete')
   @Transaction()
   async deleteOne (@TransactionManager() manager: EntityManager, @Body() body: BalanceBodyInterface): Promise<any> {
-    const { error, value } = Joi.validate(body, uniqueNameSchema)
+    const { error, value } = Joi.validate(body, BalanceDeleteBodySchema)
 
-    if (error != null) throw new ClassValidationFail(error.message)
+    if (error != null) throw new ValidationError(error.message)
     let { uniqueName } = value
 
     const balance: Balance = await getRepository(Balance).findOne({ uniqueName })

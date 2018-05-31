@@ -5,8 +5,8 @@ import { Balance } from '../entity/Balance'
 import { LogBodyInterface } from '../lib/types'
 import BalanceNotFound from '../lib/errors/BalanceNotFound'
 import Joi from 'joi'
-import { logBodySchema } from '../constraints/schemas'
-import ClassValidationFail from '../lib/errors/ClassValidationFail'
+import { LogCreateBodySchema } from '../constraints/schemas'
+import ValidationError from '../lib/errors/ValidationError'
 import LogNotFound from '../lib/errors/LogNotFound'
 
 @Controller()
@@ -35,8 +35,8 @@ export class LogController {
   @Post('/logs/transfer')
   @Transaction()
   async createLog (@TransactionManager() manager: EntityManager, @Body() body: LogBodyInterface): Promise<any> {
-    const { error, value } = Joi.validate<LogBodyInterface>(body, logBodySchema)
-    if (error != null) throw new ClassValidationFail()
+    const { error, value } = Joi.validate<LogBodyInterface>(body, LogCreateBodySchema)
+    if (error != null) throw new ValidationError()
     const validatedSenderId = value.sender
     const validatedReceiverId = value.receiver
     const validatedAmount = parseInt(`${value.amount}`, 10)
@@ -47,13 +47,10 @@ export class LogController {
 
     sender.amount = parseInt(`${sender.amount}`, 10) - validatedAmount
     receiver.amount = parseInt(`${receiver.amount}`, 10) + validatedAmount
+    if (sender.amount < 0 || receiver.amount < 0) throw new ValidationError()
 
-    try {
-      await manager.save(sender)
-      await manager.save(receiver)
-    } catch (e) {
-      throw new ClassValidationFail()
-    }
+    await manager.save(sender)
+    await manager.save(receiver)
 
     const log: Log = getRepository(Log).create({
       sender: validatedSenderId,
@@ -68,7 +65,7 @@ export class LogController {
   @Transaction()
   async deleteLog (@TransactionManager() manager: EntityManager, @Param('logId') logId: number): Promise<any> {
     const { error, value } = Joi.validate(logId, Joi.number().positive().required())
-    if (error != null) throw new ClassValidationFail()
+    if (error != null) throw new ValidationError()
 
     const selectedLog = await getRepository(Log).findOne({ id: value })
     if (selectedLog == null) throw new LogNotFound()
