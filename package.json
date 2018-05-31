@@ -54,6 +54,6 @@
       "test": "NODE_ENV=test jest --config jest.json",
       "build": "npm run clean && tsc -p ./ -w",
       "clean": "rimraf src_build",
-      "tslint": "tslint -p ./tsconfig.json -c tslint.json 'src/**/*.ts'"
+      "lint": "tslint -p ./tsconfig.json -c tslint.json 'src/**/*.ts'"
    }
 }
