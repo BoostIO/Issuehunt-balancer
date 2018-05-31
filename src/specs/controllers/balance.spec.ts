@@ -25,9 +25,7 @@ describe('Balance controller', () => {
       })
 
     expect(result.status).toEqual(200)
-    expect(JSON.parse(result.text)).toEqual({
-      deleted: true
-    })
+    expect(JSON.parse(result.text)).toEqual(true)
   })
 
   it('registers a balance', async () => {

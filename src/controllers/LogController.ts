@@ -74,6 +74,6 @@ export class LogController {
     if (selectedLog == null) throw new LogNotFound()
 
     await getRepository(Log).delete(selectedLog)
-    return { deleted: true }
+    return true
   }
 }

@@ -62,6 +62,6 @@ export class BalanceController {
     if (balance == null) throw new BalanceNotFound()
 
     await getRepository(Balance).delete(balance)
-    return { deleted: true }
+    return true
   }
 }

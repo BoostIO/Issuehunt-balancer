@@ -38,9 +38,7 @@ describe('Log controller', () => {
       .post(`/logs/delete/${JSON.parse(log.text).id}`)
 
     expect(result.status).toEqual(200)
-    expect(JSON.parse(result.text)).toEqual({
-      deleted: true
-    })
+    expect(JSON.parse(result.text)).toEqual(true)
   })
 
   it('registers a log', async () => {
