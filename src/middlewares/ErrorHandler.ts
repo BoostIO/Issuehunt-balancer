@@ -10,11 +10,11 @@ export class CustomErrorHandler implements ExpressErrorMiddlewareInterface {
     }
 
     response.status(error.httpCode || 500)
-            .json({
-              name   : error.name,
-              message: error.message,
-              status : error.httpCode
-            })
+      .json({
+        name   : error.name,
+        message: error.message,
+        status : error.httpCode
+      })
   }
 
 }
