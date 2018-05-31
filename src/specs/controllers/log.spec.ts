@@ -100,10 +100,10 @@ describe('Log controller', () => {
         amount: 300
       })
 
-    expect(result.status).toEqual(400)
+    expect(result.status).toEqual(422)
     expect(JSON.parse(result.text))
       .toEqual({
-        'message': 'Class Validation Fails', 'name': 'ClassValidationFail', 'status': 400
+        'message': 'Class Validation Fails', 'name': 'ValidationError', 'status': 422
       })
 
   })
@@ -132,10 +132,10 @@ describe('Log controller', () => {
         amount: 1.5
       })
 
-    expect(result.status).toEqual(400)
+    expect(result.status).toEqual(422)
     expect(JSON.parse(result.text))
       .toEqual({
-        'message': 'Class Validation Fails', 'name': 'ClassValidationFail', 'status': 400
+        'message': 'Class Validation Fails', 'name': 'ValidationError', 'status': 422
       })
 
   })

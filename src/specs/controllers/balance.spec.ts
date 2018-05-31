@@ -75,11 +75,11 @@ describe('Balance controller', () => {
         amount: 1
       })
 
-    expect(result.status).toEqual(400)
+    expect(result.status).toEqual(422)
     expect(JSON.parse(result.text)).toEqual(
       { message: 'child "uniqueName" fails because ["uniqueName" with value "11-_;111" fails to match the required pattern: /^([1-9]+)(\\:[1-9]+)?$/]',
-        name: 'ClassValidationFail',
-        status: 400 }
+        name: 'ValidationError',
+        status: 422 }
     )
 
   })
@@ -92,11 +92,11 @@ describe('Balance controller', () => {
         amount: -1
       })
 
-    expect(result.status).toEqual(400)
+    expect(result.status).toEqual(422)
     expect(JSON.parse(result.text)).toEqual(
       { message: 'child "amount" fails because ["amount" must be larger than or equal to 1]',
-        name: 'ClassValidationFail',
-        status: 400 }
+        name: 'ValidationError',
+        status: 422 }
     )
 
   })
@@ -109,11 +109,11 @@ describe('Balance controller', () => {
         amount: 1.11
       })
 
-    expect(result.status).toEqual(400)
+    expect(result.status).toEqual(422)
     expect(JSON.parse(result.text)).toEqual(
       { message: 'child "amount" fails because ["amount" must be an integer]',
-        name: 'ClassValidationFail',
-        status: 400 }
+        name: 'ValidationError',
+        status: 422 }
     )
 
   })
