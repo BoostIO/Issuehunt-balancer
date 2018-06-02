@@ -53,6 +53,7 @@
       "start-on-mig-env": "NODE_ENV=mig nodemon --exec ts-node src/runServer.ts",
       "test": "NODE_ENV=test jest --config jest.json",
       "build": "npm run clean && tsc -p ./ -w",
-      "clean": "rimraf src_build"
+      "clean": "rimraf src_build",
+      "lint": "tslint -p ./tsconfig.json -c tslint.json 'src/**/*.ts'"
    }
 }
