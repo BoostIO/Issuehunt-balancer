@@ -105,7 +105,6 @@ describe('Log controller', () => {
       .toEqual({
         'message': 'Class Validation Fails', 'name': 'ValidationError', 'status': 422
       })
-
   })
 
   it('throw error when the decimal balance is triggered', async () => {
@@ -188,7 +187,6 @@ describe('Log controller', () => {
         sender: '11:111',
         receiver: '22:222'
       })
-
   })
 
   it('finds logs of a sender by uniqueName', async () => {
@@ -237,7 +235,6 @@ describe('Log controller', () => {
         sender: '11:111',
         receiver: '22:222' }
     )
-
   })
 
   it('finds logs of a receiver by uniqueName', async () => {
@@ -286,6 +283,5 @@ describe('Log controller', () => {
         sender: '11:111',
         receiver: '22:222' }
     )
-
   })
 })

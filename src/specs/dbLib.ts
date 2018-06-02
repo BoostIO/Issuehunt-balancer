@@ -36,7 +36,6 @@ const dbLib = {
       resolve()
     })
   }
-
 }
 
 export default dbLib

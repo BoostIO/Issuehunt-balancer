@@ -15,6 +15,5 @@ describe('Access to not registered routes', () => {
       .toEqual({
         'message': 'API does not exist', 'name': 'Error', 'status': 404
       })
-
   })
 })
