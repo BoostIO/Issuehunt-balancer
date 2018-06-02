@@ -3,7 +3,7 @@ import app from '../../app'
 import dbLib from '../dbLib'
 
 import { Repository, getManager } from 'typeorm'
-import { Balance } from '../../entity/Balance'
+import { Balance } from '../../entities/Balance'
 
 describe('Balance controller', () => {
 

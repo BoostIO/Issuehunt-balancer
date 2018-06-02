@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import app from './app'
-import configuration from './lib/configuration'
+import configuration from './configuration'
 import { createTypeormConn } from './lib/database/createTypeormConn'
 
 const runServer = async () => {

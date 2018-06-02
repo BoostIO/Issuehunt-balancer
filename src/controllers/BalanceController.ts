@@ -1,5 +1,5 @@
 import { getManager, Transaction, TransactionManager, EntityManager, getRepository } from 'typeorm'
-import { Balance } from '../entity/Balance'
+import { Balance } from '../entities/Balance'
 import { Controller, Param, Get, Post, Body } from 'routing-controllers'
 import { BalanceBodyInterface } from '../lib/types'
 import BalanceAlreadyExist from '../lib/errors/BalanceAlreadyExist'

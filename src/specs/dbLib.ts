@@ -1,5 +1,5 @@
 import { createTypeormConn } from '../lib/database/createTypeormConn'
-import configuration from '../lib/configuration'
+import configuration from '../configuration'
 import { getConnection, getRepository } from 'typeorm'
 
 const dbLib = {
