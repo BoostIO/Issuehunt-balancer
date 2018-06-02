@@ -7,7 +7,17 @@
       "type": "git",
       "url": "https://github.com/GUIEEN/balanceTest.git"
    },
-   "license": "MIT",
+   "scripts": {
+      "start": "NODE_ENV=development nodemon --exec ts-node src/runServer.ts",
+      "create-migration": "ts-node ./node_modules/.bin/typeorm migration:generate -c mig -n Test",
+      "run-migration": "ts-node ./node_modules/.bin/typeorm migration:run -c mig",
+      "revert-migration": "ts-node ./node_modules/.bin/typeorm migration:revert -c mig",
+      "start-on-mig-env": "nodemon --exec ts-node src/runServer.ts",
+      "test": "NODE_ENV=test jest --config jest.json",
+      "build": "npm run clean && tsc -p ./ -w",
+      "clean": "rimraf src_build"
+   },
+   "license": "UNLICENSED",
    "name": "balancetestapi",
    "version": "0.0.1",
    "description": "API with TypeScript && TypeORM.",
@@ -26,7 +36,6 @@
       "chai": "^4.1.2",
       "chai-http": "^4.0.0",
       "jest": "^22.4.4",
-      "npx": "^10.2.0",
       "rimraf": "^2.6.2",
       "routing-controllers": "^0.7.7",
       "ts-jest": "^22.4.6",
@@ -44,15 +53,5 @@
       "pg": "^7.4.3",
       "reflect-metadata": "^0.1.12",
       "typeorm": "0.2.6"
-   },
-   "scripts": {
-      "start": "NODE_ENV=development nodemon --exec ts-node src/runServer.ts",
-      "create-migration": "NODE_ENV=mig npx ts-node ./node_modules/.bin/typeorm migration:generate -c mig -n Test",
-      "run-migration": "NODE_ENV=mig npx ts-node ./node_modules/.bin/typeorm migration:run -c mig",
-      "revert-migration": "NODE_ENV=mig npx ts-node ./node_modules/.bin/typeorm migration:revert -c mig",
-      "start-on-mig-env": "NODE_ENV=mig nodemon --exec ts-node src/runServer.ts",
-      "test": "NODE_ENV=test jest --config jest.json",
-      "build": "npm run clean && tsc -p ./ -w",
-      "clean": "rimraf src_build"
    }
 }
