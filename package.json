@@ -8,14 +8,14 @@
       "url": "https://github.com/GUIEEN/balanceTest.git"
    },
    "scripts": {
-      "start": "NODE_ENV=development nodemon --exec ts-node src/runServer.ts",
-      "create-migration": "ts-node ./node_modules/.bin/typeorm migration:generate -c mig -n Test",
-      "run-migration": "ts-node ./node_modules/.bin/typeorm migration:run -c mig",
-      "revert-migration": "ts-node ./node_modules/.bin/typeorm migration:revert -c mig",
-      "start-on-mig-env": "nodemon --exec ts-node src/runServer.ts",
+      "dev": "NODE_ENV=development nodemon --exec ts-node --fast src/runServer.ts",
+      "migration:create": "typeorm migration:create",
+      "migration:run": "typeorm migration:run",
+      "migration:revert": "typeorm migration:revert",
       "test": "NODE_ENV=test jest --config jest.json",
-      "build": "npm run clean && tsc -p ./ -w",
-      "clean": "rimraf src_build",
+      "build": "npm run clean && tsc",
+      "tsc": "npm run clean && tsc -w",
+      "clean": "rimraf build",
       "lint": "tslint -p ./tsconfig.json -c tslint.json 'src/**/*.ts'"
    },
    "license": "UNLICENSED",

@@ -24,5 +24,9 @@
       "es2016"
     ],
     "outDir": "build/"
-  }
+  },
+  "include": [
+    "src/**/*.ts",
+    "node_modules/@types"
+  ]
 }
