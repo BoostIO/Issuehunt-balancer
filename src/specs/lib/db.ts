@@ -1,5 +1,5 @@
-import { createTypeormConn } from '../lib/database/createTypeormConn'
-import configuration from '../configuration'
+import { createTypeormConnection } from '../../lib/database/createTypeormConnection'
+import configuration from '../../configuration'
 import { getConnection, getRepository } from 'typeorm'
 
 const dbLib = {
@@ -7,7 +7,7 @@ const dbLib = {
     if (configuration.nodeEnv !== 'test') throw new Error('You can drop db on test mode only')
 
     return new Promise(async (resolve, reject) => {
-      await createTypeormConn()
+      await createTypeormConnection()
       resolve()
     })
   },

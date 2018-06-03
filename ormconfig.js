@@ -1,0 +1,46 @@
+const dotenv = require('dotenv')
+
+let parsedConfig
+switch (process.env.NODE_ENV) {
+  case 'production':
+    parsedConfig = dotenv
+      .config({
+        path: 'production.env'
+      }).parsed
+    break
+  case 'test':
+    parsedConfig = dotenv
+      .config({
+        path: 'test.env'
+      }).parsed
+    break
+  default:
+    parsedConfig = dotenv.config().parsed
+}
+
+module.exports = {
+  name: 'default',
+  type: parsedConfig.DB_TYPE,
+  host: parsedConfig.DB_HOST,
+  port: parsedConfig.DB_PORT,
+  username: parsedConfig.DB_USERNAME,
+  password: parsedConfig.DB_PASSWORD,
+  database: parsedConfig.DB_NAME,
+  synchronize: false,
+  logging: false,
+  entities: [
+    'src/entities/**/*.ts'
+  ],
+  migrations: [
+    'src/migrations/**/*.ts'
+  ],
+  migrationsTableName: 'migration_logs',
+  subscribers: [
+    'src/subscribers/**/*.ts'
+  ],
+  cli: {
+    entitiesDir: 'src/entities',
+    migrationsDir: 'src/migrations',
+    subscribersDir: 'src/subscribers'
+  }
+}

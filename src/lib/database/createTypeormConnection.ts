@@ -1,7 +1,10 @@
 import { createConnection, getConnectionOptions } from 'typeorm'
 import configuration from '../../configuration'
-
-export const createTypeormConn = async () => {
+export const createTypeormConnection = async () => {
   const connectionOptions = await getConnectionOptions(configuration.dbConnectionName)
-  return createConnection({ ...connectionOptions, name: 'default' })
+
+  return createConnection({
+    name: 'default',
+    ...connectionOptions
+  })
 }

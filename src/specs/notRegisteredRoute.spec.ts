@@ -1,10 +1,10 @@
 import chai from 'chai'
-import dbLib from './dbLib'
+import db from './lib/db'
 import app from '../app'
 
 describe('Access to not registered routes', () => {
-  beforeEach(dbLib.connectDB)
-  afterEach(dbLib.initializeEntityID)
+  beforeEach(db.connectDB)
+  afterEach(db.initializeEntityID)
 
   it('does not registered route', async () => {
     const result = await chai.request(app)
