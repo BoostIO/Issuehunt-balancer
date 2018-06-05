@@ -1,9 +1,9 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm'
+import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm'
 
 export class BalanceRefactoring1526354141714 implements MigrationInterface {
   public async up (queryRunner: QueryRunner): Promise<any> {
     await queryRunner.createTable(new Table({
-      name: 'log',
+      name: 'transfers',
       columns: [
         {
           name: 'id',
@@ -13,16 +13,16 @@ export class BalanceRefactoring1526354141714 implements MigrationInterface {
           generationStrategy: 'increment'
         },
         {
-          name: 'sender',
-          type: 'varchar',
-          isUnique: false,
-          length: '255'
+          name: 'senderId',
+          type: 'bigint'
         },
         {
-          name: 'receiver',
-          type: 'varchar',
-          isUnique: false,
-          length: '255'
+          name: 'receiverId',
+          type: 'bigint'
+        },
+        {
+          name: 'amount',
+          type: 'bigint'
         },
         {
           name: 'createdDate',
@@ -33,7 +33,7 @@ export class BalanceRefactoring1526354141714 implements MigrationInterface {
     }), true)
 
     await queryRunner.createTable(new Table({
-      name: 'balance',
+      name: 'balances',
       columns: [
         {
           name: 'id',
@@ -50,12 +50,8 @@ export class BalanceRefactoring1526354141714 implements MigrationInterface {
         },
         {
           name: 'amount',
-          type: 'bigint'
-        },
-        {
-          name: 'logId',
           type: 'bigint',
-          isNullable: true
+          default: 0
         }
       ],
       uniques: [
@@ -66,29 +62,44 @@ export class BalanceRefactoring1526354141714 implements MigrationInterface {
       checks: [
         {
           columnNames: ['amount'],
-          expression: `"amount" > 0`
-        }
-      ],
-      foreignKeys: [
-        {
-          columnNames: ['logId'],
-          referencedColumnNames: ['id'],
-          referencedTableName: 'log'
+          expression: `"amount" >= 0`
         }
       ]
-    }), true, true)
+    }), true)
+
+    await queryRunner.createForeignKeys('transfers', [
+      new TableForeignKey({
+        columnNames: ['senderId'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'balances',
+        onDelete: 'CASCADE'
+      }),
+      new TableForeignKey({
+        columnNames: ['receiverId'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'balances',
+        onDelete: 'CASCADE'
+      })
+    ])
   }
 
   public async down (queryRunner: QueryRunner): Promise<any> {
-    const table = await queryRunner.getTable('balance')
-    const foreignKey = table.foreignKeys.find(
-      fk => {
-        return fk.columnNames.indexOf('logId') !== -1
-      }
-    )
+    await queryRunner.dropForeignKeys('transfers', [
+      new TableForeignKey({
+        columnNames: ['senderId'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'balances',
+        onDelete: 'CASCADE'
+      }),
+      new TableForeignKey({
+        columnNames: ['receiverId'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'balances',
+        onDelete: 'CASCADE'
+      })
+    ])
 
-    await queryRunner.dropForeignKey('balance', foreignKey)
-    await queryRunner.dropTable('balance')
-    await queryRunner.dropTable('log')
+    await queryRunner.dropTable('transfers')
+    await queryRunner.dropTable('balances')
   }
 }
