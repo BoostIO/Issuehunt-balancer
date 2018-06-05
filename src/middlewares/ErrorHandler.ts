@@ -1,20 +1,27 @@
 import express from 'express'
 import { Middleware, ExpressErrorMiddlewareInterface } from 'routing-controllers'
+import Joi from 'joi'
 
 @Middleware({ type: 'after' })
 export class CustomErrorHandler implements ExpressErrorMiddlewareInterface {
 
   error (error: any, request: any, response: any, next: express.NextFunction) {
-    if (error.httpCode === 500) {
-      console.log('SERVER ERROR')
-    }
+    const name = error.name
+    const status = error.httpCode != null
+      ? error.httpCode
+      : error.isJoi
+        ? 422
+        : 500
 
-    response.status(error.httpCode || 500)
+    const message = error.isJoi
+      ? (error as Joi.ValidationError).details.map(detail => detail.message).join(', ')
+      : error.message
+
+    response.status(status)
       .json({
-        name   : error.name,
-        message: error.message,
-        status : error.httpCode
+        name,
+        message,
+        status
       })
   }
-
 }
