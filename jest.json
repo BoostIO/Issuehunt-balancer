@@ -8,7 +8,7 @@
     ".ts": "<rootDir>/node_modules/ts-jest/preprocessor.js"
   },
   "setupFiles": [
-    "<rootDir>/src_build/specs/setup"
+    "<rootDir>/build/specs/setup"
   ],
   "testEnvironment": "node",
   "testRegex": "(/__tests__/.*|\\.spec)\\.ts$",
@@ -18,5 +18,4 @@
     "json"
   ],
   "rootDir": "./"
-
 }
