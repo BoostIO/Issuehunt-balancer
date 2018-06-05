@@ -1,41 +1,16 @@
 import { createTypeormConnection } from '../../lib/database/createTypeormConnection'
 import configuration from '../../configuration'
-import { getConnection, getRepository } from 'typeorm'
+import Balance from '../../entities/Balance'
+import Transfer from '../../entities/Transfer'
 
-const dbLib = {
-  async connectDB () {
-    if (configuration.nodeEnv !== 'test') throw new Error('You can drop db on test mode only')
+export async function prepareDB () {
+  if (configuration.nodeEnv !== 'test') throw new Error('You can drop db on test mode only')
 
-    return new Promise(async (resolve, reject) => {
-      await createTypeormConnection()
-      resolve()
-    })
-  },
-
-  async initializeEntityID () {
-    if (configuration.nodeEnv !== 'test') throw new Error('You can drop db on test mode only')
-
-    return new Promise(async (resolve, reject) => {
-      const entities = ['Balance', 'Log']
-      for (let i = 0; i < entities.length; i++) {
-        const allEntities = await getRepository(entities[i]).find({})
-        await getRepository(entities[i]).remove(allEntities)
-        await getRepository(entities[i]).query(`ALTER SEQUENCE ${entities[i]}_id_seq RESTART WITH 1`)
-        // TRUNCATE TABLE ${entities[i]} RESTART IDENTITY --> Somewhat reasons, it occurs error !
-      }
-      resolve()
-    })
-  },
-
-  async dropDB () {
-    if (configuration.nodeEnv !== 'test') throw new Error('You can drop db on test mode only')
-
-    return new Promise(async (resolve, reject) => {
-      await getConnection().dropDatabase()
-      await getConnection().close()
-      resolve()
-    })
-  }
+  return createTypeormConnection()
 }
 
-export default dbLib
+export async function deleteAllDataFromDB () {
+  if (configuration.nodeEnv !== 'test') throw new Error('You can drop db on test mode only')
+  await Balance.delete({})
+  await Transfer.delete({})
+}
