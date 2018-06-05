@@ -3,9 +3,8 @@ import { Middleware, ExpressErrorMiddlewareInterface } from 'routing-controllers
 import Joi from 'joi'
 
 @Middleware({ type: 'after' })
-export class CustomErrorHandler implements ExpressErrorMiddlewareInterface {
-
-  error (error: any, request: any, response: any, next: express.NextFunction) {
+class CustomErrorHandler implements ExpressErrorMiddlewareInterface {
+  public error (error: any, request: any, response: any, next: express.NextFunction) {
     const name = error.name
     const status = error.httpCode != null
       ? error.httpCode
@@ -25,3 +24,5 @@ export class CustomErrorHandler implements ExpressErrorMiddlewareInterface {
       })
   }
 }
+
+export default CustomErrorHandler

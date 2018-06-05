@@ -2,9 +2,9 @@ import Express from 'express'
 import bodyParser from 'body-parser'
 import { useExpressServer } from 'routing-controllers'
 import { BalanceController } from './controllers/BalanceController'
-import { CustomErrorHandler } from './middlewares/ErrorHandler'
-import { LogController } from './controllers/LogController'
-import { NotRegisteredRoute } from './middlewares/NotRegisteredRoute'
+import ErrorHandlingMiddleware from './middlewares/ErrorHandlingMiddleware'
+import TransferController from './controllers/TransferController'
+import NotFoundMiddleware from './middlewares/NotFoundMiddleware'
 
 const app = Express()
 app.use(bodyParser.json())
@@ -14,11 +14,11 @@ useExpressServer(app, {
   defaultErrorHandler: false,
   controllers: [
     BalanceController,
-    LogController
+    TransferController
   ],
   middlewares: [
-    NotRegisteredRoute,
-    CustomErrorHandler
+    NotFoundMiddleware,
+    ErrorHandlingMiddleware
   ]
 })
 
