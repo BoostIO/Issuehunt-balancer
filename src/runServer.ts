@@ -5,7 +5,7 @@ import { createTypeormConnection } from './lib/database/createTypeormConnection'
 
 const runServer = async () => {
   await createTypeormConnection()
-  app.listen(configuration.port, () => console.log(`Express application is up and running on port ${configuration.port}`))
+  app.listen(configuration.port, () => console.log(`Balancer is running on port ${configuration.port}`))
 }
 
 runServer()
