@@ -47,6 +47,7 @@
       "typescript": "2.8.3"
    },
    "dependencies": {
+      "big-integer": "^1.6.30",
       "body-parser": "^1.18.3",
       "express": "^4.16.3",
       "express-promise-router": "^3.0.2",
