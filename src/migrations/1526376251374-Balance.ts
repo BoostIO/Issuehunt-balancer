@@ -33,6 +33,58 @@ export class BalanceRefactoring1526354141714 implements MigrationInterface {
     }), true)
 
     await queryRunner.createTable(new Table({
+      name: 'deposits',
+      columns: [
+        {
+          name: 'id',
+          type: 'bigint',
+          isPrimary: true,
+          isGenerated: true,
+          generationStrategy: 'increment'
+        },
+        {
+          name: 'balanceId',
+          type: 'bigint'
+        },
+        {
+          name: 'amount',
+          type: 'bigint'
+        },
+        {
+          name: 'createdDate',
+          type: 'timestamp',
+          default: 'now()'
+        }
+      ]
+    }), true)
+
+    await queryRunner.createTable(new Table({
+      name: 'withdraws',
+      columns: [
+        {
+          name: 'id',
+          type: 'bigint',
+          isPrimary: true,
+          isGenerated: true,
+          generationStrategy: 'increment'
+        },
+        {
+          name: 'balanceId',
+          type: 'bigint'
+        },
+        {
+          name: 'amount',
+          type: 'bigint'
+        },
+        {
+          name: 'createdDate',
+          type: 'timestamp',
+          default: 'now()'
+        }
+      ]
+    }), true)
+
+    await queryRunner.createTable(new Table({
       name: 'balances',
       columns: [
         {
@@ -81,25 +133,24 @@ export class BalanceRefactoring1526354141714 implements MigrationInterface {
         onDelete: 'CASCADE'
       })
     ])
+    await queryRunner.createForeignKey('deposits', new TableForeignKey({
+      columnNames: ['balanceId'],
+      referencedColumnNames: ['id'],
+      referencedTableName: 'balances',
+      onDelete: 'CASCADE'
+    }))
+    await queryRunner.createForeignKey('withdraws', new TableForeignKey({
+      columnNames: ['balanceId'],
+      referencedColumnNames: ['id'],
+      referencedTableName: 'balances',
+      onDelete: 'CASCADE'
+    }))
   }
 
   public async down (queryRunner: QueryRunner): Promise<any> {
-    await queryRunner.dropForeignKeys('transfers', [
-      new TableForeignKey({
-        columnNames: ['senderId'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'balances',
-        onDelete: 'CASCADE'
-      }),
-      new TableForeignKey({
-        columnNames: ['receiverId'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'balances',
-        onDelete: 'CASCADE'
-      })
-    ])
-
     await queryRunner.dropTable('transfers')
+    await queryRunner.dropTable('deposits')
+    await queryRunner.dropTable('withdraws')
     await queryRunner.dropTable('balances')
   }
 }
