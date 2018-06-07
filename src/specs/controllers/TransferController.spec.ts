@@ -11,6 +11,45 @@ describe('BalanceController', () => {
   beforeAll(prepareDB)
   afterEach(deleteAllDataFromDB)
 
+  describe('list', () => {
+    it('shows list of transfers', async () => {
+      // Given
+      const uniqueNameA = 'A'
+      const uniqueNameB = 'B'
+      const balanceA = await Balance
+        .create({
+          uniqueName: uniqueNameA,
+          amount: '100'
+        })
+        .save()
+      const balanceB = await Balance
+        .create({
+          uniqueName: uniqueNameB,
+          amount: '0'
+        })
+        .save()
+
+      const transfer = await Transfer
+        .create({
+          senderId: balanceA.id,
+          receiverId: balanceB.id,
+          amount: '100'
+        })
+        .save()
+
+      // When
+      const response = await chai.request(app)
+        .get(`/transfers`)
+
+      // Then
+      expect(response.body).toMatchObject({
+        transfers: [{
+          id: transfer.id
+        }]
+      })
+    })
+  })
+
   describe('create', () => {
     it('transfers balance and records the transferring', async () => {
       // Given

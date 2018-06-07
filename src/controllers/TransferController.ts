@@ -15,7 +15,9 @@ class TransferController {
   async list () {
     const transfers: Transfer[] = await Transfer.find()
 
-    return transfers
+    return {
+      transfers
+    }
   }
 
   @Post('/transfers')
