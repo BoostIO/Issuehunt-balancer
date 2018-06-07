@@ -1,8 +1,18 @@
 import { Entity, Column, BaseEntity, PrimaryGeneratedColumn, Check, getManager } from 'typeorm'
 import BigInt from 'big-integer'
-import {
-  MAX_INTEGER
-} from '../lib/consts'
+import { PostgresqlErrorCodes } from '../lib/consts'
+
+export class BalanceError extends Error {
+  name = 'BalanceError'
+}
+
+function parseBigInt (value: string) {
+  try {
+    return BigInt(value)
+  } catch (error) {
+    if (error.message === 'Invalid integer: amount') throw new BalanceError('The given value is not a valid integer.')
+  }
+}
 
 @Entity('balances')
 @Check(`"amount" >= 0`)
@@ -16,40 +26,52 @@ class Balance extends BaseEntity {
   @Column('bigint')
   amount!: string
 
-  async increaseAmount (value: string | number) {
-    const valueInBigInt = BigInt(value as number)
-    if (!valueInBigInt.isPositive()) throw new Error('The given value must be positive number.')
-    const resultValueInBigInt = valueInBigInt.plus(this.amount)
-    if (resultValueInBigInt.compareTo(MAX_INTEGER) === 1) throw new Error('The calculated value is exceeding range of big integer.')
+  async increaseAmount (value: string) {
+    const valueInBigInt = parseBigInt(value)
+    if (!valueInBigInt.isPositive()) throw new BalanceError('The given value must be positive number.')
 
-    return getManager()
-      .createQueryBuilder(Balance, 'entity')
-      .update(Balance)
-      .set({
-        amount: () => `amount + ${valueInBigInt.toString()}`
-      })
-      .where({
-        id: this.id
-      })
-      .execute()
+    try {
+      return await getManager()
+        .createQueryBuilder(Balance, 'entity')
+        .update(Balance)
+        .set({
+          amount: () => `amount + ${valueInBigInt.toString()}`
+        })
+        .where({
+          id: this.id
+        })
+        .execute()
+    } catch (error) {
+      if (error.code === PostgresqlErrorCodes.NUMERIC_VALUE_OUT_OF_RANGE) {
+        throw new BalanceError('The result amount is exceeding range of big integer.')
+      } else {
+        throw error
+      }
+    }
   }
 
-  async decreaseAmount (value: string | number) {
-    const valueInBigInt = BigInt(value as number)
-    if (!valueInBigInt.isPositive()) throw new Error('The value must be a positive number.')
-    const resultValueInBigInt = BigInt(this.amount).minus(valueInBigInt)
-    if (resultValueInBigInt.isNegative()) throw new Error('The calculated value must not be a negative number.')
+  async decreaseAmount (value: string) {
+    const valueInBigInt = parseBigInt(value)
+    if (!valueInBigInt.isPositive()) throw new BalanceError('The value must be a positive number.')
 
-    return getManager()
-      .createQueryBuilder(Balance, 'entity')
-      .update(Balance)
-      .set({
-        amount: () => `amount - ${valueInBigInt.toString()}`
-      })
-      .where({
-        id: this.id
-      })
-      .execute()
+    try {
+      return await getManager()
+        .createQueryBuilder(Balance, 'entity')
+        .update(Balance)
+        .set({
+          amount: () => `amount - ${valueInBigInt.toString()}`
+        })
+        .where({
+          id: this.id
+        })
+        .execute()
+    } catch (error) {
+      if (error.code === PostgresqlErrorCodes.CHECK_VIOLATION) {
+        throw new BalanceError('The result amount cannot be negative number.')
+      } else {
+        throw error
+      }
+    }
   }
 }
 

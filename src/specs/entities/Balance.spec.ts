@@ -3,9 +3,7 @@ import {
   prepareDB,
   deleteAllDataFromDB
 } from '../lib/db'
-import {
-  MAX_INTEGER
-} from '../../lib/consts'
+import { PostgresqlBigIntegerRange } from '../../lib/consts'
 
 describe('Balance', () => {
   beforeAll(prepareDB)
@@ -44,7 +42,7 @@ describe('Balance', () => {
         await balance.increaseAmount('amount')
       } catch (error) {
         expect(error).toMatchObject({
-          message: 'Invalid integer: amount'
+          message: 'The given value is not a valid integer.'
         })
       }
     })
@@ -55,15 +53,16 @@ describe('Balance', () => {
       const uniqueName = 'tango'
       const balance = new Balance()
       balance.uniqueName = uniqueName
-      balance.amount = `${MAX_INTEGER}`
+      balance.amount = `${PostgresqlBigIntegerRange.MAX_BIG_INTEGER}`
       await balance.save()
 
       // When
       try {
-        await balance.increaseAmount(1)
+        await balance.increaseAmount('5')
+        console.log(await Balance.findOne(balance.id))
       } catch (error) {
         expect(error).toMatchObject({
-          message: 'The calculated value is exceeding range of big integer.'
+          message: 'The result amount is exceeding range of big integer.'
         })
       }
     })
@@ -102,7 +101,7 @@ describe('Balance', () => {
         await balance.decreaseAmount('amount')
       } catch (error) {
         expect(error).toMatchObject({
-          message: 'Invalid integer: amount'
+          message: 'The given value is not a valid integer.'
         })
       }
     })
@@ -118,10 +117,10 @@ describe('Balance', () => {
 
       // When
       try {
-        await balance.decreaseAmount(200)
+        await balance.decreaseAmount('200')
       } catch (error) {
         expect(error).toMatchObject({
-          message: 'The calculated value must not be a negative number.'
+          message: 'The result amount cannot be negative number.'
         })
       }
     })
