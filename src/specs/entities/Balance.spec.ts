@@ -59,7 +59,6 @@ describe('Balance', () => {
       // When
       try {
         await balance.increaseAmount('5')
-        console.log(await Balance.findOne(balance.id))
       } catch (error) {
         expect(error).toMatchObject({
           message: 'The result amount is exceeding range of big integer.'
