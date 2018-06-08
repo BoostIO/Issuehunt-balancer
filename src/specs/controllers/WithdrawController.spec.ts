@@ -11,6 +11,52 @@ describe('WithdrawController', () => {
   beforeAll(prepareDB)
   afterEach(deleteAllDataFromDB)
 
+  describe('show', () => {
+    it('shows a deposit', async () => {
+      // Given
+      const uniqueName = 'A'
+      const balance = await Balance
+        .create({
+          uniqueName,
+          amount: '100'
+        })
+        .save()
+      const withdraw = await Withdraw
+        .create({
+          balanceId: balance.id,
+          amount: '100',
+          note: 'test'
+        })
+        .save()
+
+      // When
+      const response = await chai.request(app)
+        .get(`/withdraws/${withdraw.id}`)
+
+      // Then
+      expect(response.body).toMatchObject({
+        withdraw: {
+          id: withdraw.id,
+          balanceId: balance.id,
+          amount: '100',
+          note: 'test'
+        }
+      })
+    })
+
+    it('throws an error when the withdraw does not exist', async () => {
+      // Given
+      const withdrawId = '77777'
+
+      // When
+      const response = await chai.request(app)
+        .get(`/withdraws/${withdrawId}`)
+
+      // Then
+      expect(response.status).toEqual(404)
+    })
+  })
+
   describe('list', () => {
     it('shows list of withdraws', async () => {
       // Given

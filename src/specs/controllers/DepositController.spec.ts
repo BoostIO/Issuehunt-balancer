@@ -11,6 +11,52 @@ describe('DepositController', () => {
   beforeAll(prepareDB)
   afterEach(deleteAllDataFromDB)
 
+  describe('show', () => {
+    it('shows a deposit', async () => {
+      // Given
+      const uniqueName = 'A'
+      const balance = await Balance
+        .create({
+          uniqueName,
+          amount: '100'
+        })
+        .save()
+      const deposit = await Deposit
+        .create({
+          balanceId: balance.id,
+          amount: '100',
+          note: 'test'
+        })
+        .save()
+
+      // When
+      const response = await chai.request(app)
+        .get(`/deposits/${deposit.id}`)
+
+      // Then
+      expect(response.body).toMatchObject({
+        deposit: {
+          id: deposit.id,
+          balanceId: balance.id,
+          amount: '100',
+          note: 'test'
+        }
+      })
+    })
+
+    it('throws an error when the deposit does not exist', async () => {
+      // Given
+      const depositId = '77777'
+
+      // When
+      const response = await chai.request(app)
+        .get(`/deposits/${depositId}`)
+
+      // Then
+      expect(response.status).toEqual(404)
+    })
+  })
+
   describe('list', () => {
     it('shows list of deposits', async () => {
       // Given

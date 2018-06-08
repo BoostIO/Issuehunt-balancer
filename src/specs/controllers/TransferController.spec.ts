@@ -7,9 +7,65 @@ import {
 import Balance from '../../entities/Balance'
 import Transfer from '../../entities/Transfer'
 
-describe('BalanceController', () => {
+describe('TransferController', () => {
   beforeAll(prepareDB)
   afterEach(deleteAllDataFromDB)
+
+  describe('show', () => {
+    it('shows a deposit', async () => {
+      // Given
+      const uniqueNameA = 'A'
+      const uniqueNameB = 'B'
+      const balanceA = await Balance
+        .create({
+          uniqueName: uniqueNameA,
+          amount: '100'
+        })
+        .save()
+      const balanceB = await Balance
+        .create({
+          uniqueName: uniqueNameB,
+          amount: '0'
+        })
+        .save()
+
+      const transfer = await Transfer
+        .create({
+          senderId: balanceA.id,
+          receiverId: balanceB.id,
+          amount: '100',
+          note: 'test'
+        })
+        .save()
+
+      // When
+      const response = await chai.request(app)
+        .get(`/transfers/${transfer.id}`)
+
+      // Then
+      expect(response.body).toMatchObject({
+        transfer: {
+          id: transfer.id,
+          senderId: balanceA.id,
+          receiverId: balanceB.id,
+          amount: '100',
+          note: 'test'
+        }
+      })
+    })
+
+    it('throws an error when the transfer does not exist', async () => {
+      // Given
+      const transferId = '77777'
+
+      // When
+      const response = await chai.request(app)
+        .get(`/transfers/${transferId}`)
+
+      // Then
+      expect(response.status).toEqual(404)
+    })
+  })
 
   describe('list', () => {
     it('shows list of transfers', async () => {
