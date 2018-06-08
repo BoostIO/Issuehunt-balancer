@@ -5,14 +5,14 @@ import {
   deleteAllDataFromDB
 } from '../lib/db'
 import Balance from '../../entities/Balance'
-import Deposit from '../../entities/Deposit'
+import Withdraw from '../../entities/Withdraw'
 
-describe('DepositController', () => {
+describe('WithdrawController', () => {
   beforeAll(prepareDB)
   afterEach(deleteAllDataFromDB)
 
   describe('list', () => {
-    it('shows list of deposits', async () => {
+    it('shows list of withdraws', async () => {
       // Given
       const uniqueName = 'A'
       const balance = await Balance
@@ -21,7 +21,7 @@ describe('DepositController', () => {
           amount: '100'
         })
         .save()
-      const deposit = await Deposit
+      const withdraw = await Withdraw
         .create({
           balanceId: balance.id,
           amount: '100'
@@ -30,12 +30,12 @@ describe('DepositController', () => {
 
       // When
       const response = await chai.request(app)
-        .get(`/deposits`)
+        .get('/withdraws')
 
       // Then
       expect(response.body).toMatchObject({
-        deposits: [{
-          id: deposit.id,
+        withdraws: [{
+          id: withdraw.id,
           balanceId: balance.id,
           amount: '100'
         }]
@@ -55,59 +55,65 @@ describe('DepositController', () => {
         .save()
 
       // When
-      const depositAmount = '100'
+      const withdrawAmount = '100'
       const response = await chai.request(app)
-        .post(`/deposits`)
+        .post('/withdraws')
         .send({
           balanceUniqueName: uniqueName,
-          amount: depositAmount
+          amount: withdrawAmount
         })
 
       // Then
-      expect(response.body.deposit).toMatchObject({
+      expect(response.body.withdraw).toMatchObject({
         id: expect.any(String),
         balanceId: balance.id,
-        amount: depositAmount
+        amount: withdrawAmount
       })
 
-      const deposit = await Deposit.findOne({
+      const deposit = await Withdraw.findOne({
         where: {
-          id: response.body.deposit.id
+          id: response.body.withdraw.id
         }
       })
       expect(deposit).toMatchObject({
         id: expect.any(String),
         balanceId: balance.id,
-        amount: depositAmount
+        amount: withdrawAmount
       })
       const updatedBalance = await Balance.findOne({
         where: {
           uniqueName
         }
       })
-      expect(updatedBalance.amount).toBe('200')
+      expect(updatedBalance.amount).toBe('0')
     })
 
     it('throws when given wrong balance unique name', async () => {
       // Given
       const uniqueName = 'A'
+      const balance = await Balance
+        .create({
+          uniqueName,
+          amount: '100'
+        })
+        .save()
 
       // When
-      const depositAmount = '100'
+      const withdrawAmount = '200'
       const response = await chai.request(app)
-        .post(`/deposits`)
+        .post('/withdraws')
         .send({
           balanceUniqueName: uniqueName,
-          amount: depositAmount
+          amount: withdrawAmount
         })
 
       // Then
       expect(response.body).toEqual({
         name: 'UnprocessableEntityError',
-        message: 'The balance does not exist.',
+        message: 'The result amount cannot be negative number.',
         status: 422
       })
-      expect(response.status).toEqual(422)
+      expect(response.body.status).toBe(422)
     })
   })
 })

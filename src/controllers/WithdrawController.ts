@@ -1,29 +1,29 @@
 import { Transaction, TransactionManager, EntityManager } from 'typeorm'
 import { Controller, Get, Post, Body } from 'routing-controllers'
-import Deposit from '../entities/Deposit'
+import Withdraw from '../entities/Withdraw'
 import Balance from '../entities/Balance'
 import Joi from 'joi'
 import ValidationError from '../lib/errors/ValidationError'
 import {
-  DepositCreateBody,
-  depositCreateBodySchema
-} from '../schemas/deposits'
+  WithdrawCreateBody,
+  withdrawCreateBodySchema
+} from '../schemas/withdraws'
 
 @Controller()
-class DepositController {
-  @Get('/deposits')
+class WithdrawController {
+  @Get('/withdraws')
   async list () {
-    const deposits = await Deposit.find()
+    const withdraws = await Withdraw.find()
 
     return {
-      deposits
+      withdraws
     }
   }
 
-  @Post('/deposits')
+  @Post('/withdraws')
   @Transaction()
-  async create (@TransactionManager() manager: EntityManager, @Body() body: DepositCreateBody): Promise<any> {
-    const { error, value } = Joi.validate(body, depositCreateBodySchema)
+  async create (@TransactionManager() manager: EntityManager, @Body() body: WithdrawCreateBody): Promise<any> {
+    const { error, value } = Joi.validate(body, withdrawCreateBodySchema)
     if (error != null) throw new ValidationError()
     const {
       balanceUniqueName,
@@ -38,13 +38,13 @@ class DepositController {
     if (balance == null) throw new ValidationError('The balance does not exist.')
 
     try {
-      await balance.increaseAmount(amount)
+      await balance.decreaseAmount(amount)
     } catch (error) {
       if (error.name === 'BalanceError') throw new ValidationError(error.message)
       else throw error
     }
 
-    const deposit = await Deposit
+    const withdraw = await Withdraw
       .create({
         balanceId: balance.id,
         amount
@@ -52,9 +52,9 @@ class DepositController {
       .save()
 
     return {
-      deposit
+      withdraw
     }
   }
 }
 
-export default DepositController
+export default WithdrawController
