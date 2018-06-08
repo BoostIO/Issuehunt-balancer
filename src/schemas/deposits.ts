@@ -1,4 +1,5 @@
 import Joi from 'joi'
+import { amountConstraint, uniqueNameConstraint } from './sharedConstraints'
 
 export interface DepositCreateBody {
   balanceUniqueName: string
@@ -7,7 +8,7 @@ export interface DepositCreateBody {
 }
 
 export const depositCreateBodySchema = Joi.object({
-  balanceUniqueName: Joi.string(),
-  amount: Joi.string().regex(/^[0-9]+$/),
+  balanceUniqueName: uniqueNameConstraint,
+  amount: amountConstraint,
   note: Joi.string()
 })

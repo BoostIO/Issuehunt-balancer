@@ -1,5 +1,5 @@
 import { Transaction, TransactionManager, EntityManager } from 'typeorm'
-import { Controller, Get, Post, Body } from 'routing-controllers'
+import { Controller, Get, Post, Body, Param, NotFoundError } from 'routing-controllers'
 import Transfer from '../entities/Transfer'
 import Balance from '../entities/Balance'
 import Joi from 'joi'
@@ -17,6 +17,21 @@ class TransferController {
 
     return {
       transfers
+    }
+  }
+
+  @Get('/transfers/:transferId')
+  async show (@Param('transferId') transferId: string) {
+    const transfer = await Transfer.findOne({
+      where: {
+        id: transferId
+      }
+    })
+
+    if (transfer == null) throw new NotFoundError('The transfer does not exist.')
+
+    return {
+      transfer
     }
   }
 

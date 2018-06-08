@@ -1,5 +1,5 @@
 import { Transaction, TransactionManager, EntityManager } from 'typeorm'
-import { Controller, Get, Post, Body } from 'routing-controllers'
+import { Controller, Get, Post, Body, Param, NotFoundError } from 'routing-controllers'
 import Withdraw from '../entities/Withdraw'
 import Balance from '../entities/Balance'
 import Joi from 'joi'
@@ -17,6 +17,21 @@ class WithdrawController {
 
     return {
       withdraws
+    }
+  }
+
+  @Get('/withdraws/:withdrawId')
+  async show (@Param('withdrawId') withdrawId: string) {
+    const withdraw = await Withdraw.findOne({
+      where: {
+        id: withdrawId
+      }
+    })
+
+    if (withdraw == null) throw new NotFoundError('The withdraw does not exist.')
+
+    return {
+      withdraw
     }
   }
 

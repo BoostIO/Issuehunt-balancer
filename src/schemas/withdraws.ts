@@ -1,4 +1,5 @@
 import Joi from 'joi'
+import { uniqueNameConstraint, amountConstraint } from './sharedConstraints'
 
 export interface WithdrawCreateBody {
   balanceUniqueName: string
@@ -7,7 +8,7 @@ export interface WithdrawCreateBody {
 }
 
 export const withdrawCreateBodySchema = Joi.object({
-  balanceUniqueName: Joi.string(),
-  amount: Joi.string().regex(/^[0-9]+$/),
+  balanceUniqueName: uniqueNameConstraint,
+  amount: amountConstraint,
   note: Joi.string()
 })
