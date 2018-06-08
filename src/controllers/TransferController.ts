@@ -28,7 +28,8 @@ class TransferController {
     const {
       senderUniqueName,
       receiverUniqueName,
-      amount
+      amount,
+      note
     } = value
 
     const senderBalance = await Balance.findOne({
@@ -56,7 +57,8 @@ class TransferController {
       .create({
         senderId: senderBalance.id,
         receiverId: receiverBalance.id,
-        amount
+        amount,
+        note
       })
       .save()
 

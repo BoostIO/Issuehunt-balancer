@@ -33,7 +33,8 @@ describe('BalanceController', () => {
         .create({
           senderId: balanceA.id,
           receiverId: balanceB.id,
-          amount: '100'
+          amount: '100',
+          note: 'test'
         })
         .save()
 
@@ -44,7 +45,11 @@ describe('BalanceController', () => {
       // Then
       expect(response.body).toMatchObject({
         transfers: [{
-          id: transfer.id
+          id: transfer.id,
+          senderId: balanceA.id,
+          receiverId: balanceB.id,
+          amount: '100',
+          note: 'test'
         }]
       })
     })
@@ -75,7 +80,8 @@ describe('BalanceController', () => {
         .send({
           senderUniqueName: uniqueNameA,
           receiverUniqueName: uniqueNameB,
-          amount: transferAmount
+          amount: transferAmount,
+          note: 'test'
         })
 
       // Then
@@ -83,7 +89,8 @@ describe('BalanceController', () => {
         id: expect.any(String),
         senderId: balanceA.id,
         receiverId: balanceB.id,
-        amount: transferAmount
+        amount: transferAmount,
+        note: 'test'
       })
 
       const transfer = await Transfer.findOne({

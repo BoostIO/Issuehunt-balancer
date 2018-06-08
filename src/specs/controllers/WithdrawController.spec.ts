@@ -24,7 +24,8 @@ describe('WithdrawController', () => {
       const withdraw = await Withdraw
         .create({
           balanceId: balance.id,
-          amount: '100'
+          amount: '100',
+          note: 'test'
         })
         .save()
 
@@ -37,7 +38,8 @@ describe('WithdrawController', () => {
         withdraws: [{
           id: withdraw.id,
           balanceId: balance.id,
-          amount: '100'
+          amount: '100',
+          note: 'test'
         }]
       })
     })
@@ -60,14 +62,16 @@ describe('WithdrawController', () => {
         .post('/withdraws')
         .send({
           balanceUniqueName: uniqueName,
-          amount: withdrawAmount
+          amount: withdrawAmount,
+          note: 'test'
         })
 
       // Then
       expect(response.body.withdraw).toMatchObject({
         id: expect.any(String),
         balanceId: balance.id,
-        amount: withdrawAmount
+        amount: withdrawAmount,
+        note: 'test'
       })
 
       const deposit = await Withdraw.findOne({
@@ -78,7 +82,8 @@ describe('WithdrawController', () => {
       expect(deposit).toMatchObject({
         id: expect.any(String),
         balanceId: balance.id,
-        amount: withdrawAmount
+        amount: withdrawAmount,
+        note: 'test'
       })
       const updatedBalance = await Balance.findOne({
         where: {

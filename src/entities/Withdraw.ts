@@ -11,6 +11,9 @@ class Deposit extends BaseEntity {
   @Column('bigint')
   amount!: string
 
+  @Column('text')
+  note!: string
+
   @CreateDateColumn()
   createdDate!: Date
 }

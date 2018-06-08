@@ -25,6 +25,10 @@ export class BalanceRefactoring1526354141714 implements MigrationInterface {
           type: 'bigint'
         },
         {
+          name: 'note',
+          type: 'text'
+        },
+        {
           name: 'createdDate',
           type: 'timestamp',
           default: 'now()'
@@ -51,6 +55,10 @@ export class BalanceRefactoring1526354141714 implements MigrationInterface {
           type: 'bigint'
         },
         {
+          name: 'note',
+          type: 'text'
+        },
+        {
           name: 'createdDate',
           type: 'timestamp',
           default: 'now()'
@@ -75,6 +83,10 @@ export class BalanceRefactoring1526354141714 implements MigrationInterface {
         {
           name: 'amount',
           type: 'bigint'
+        },
+        {
+          name: 'note',
+          type: 'text'
         },
         {
           name: 'createdDate',

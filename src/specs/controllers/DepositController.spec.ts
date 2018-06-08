@@ -24,7 +24,8 @@ describe('DepositController', () => {
       const deposit = await Deposit
         .create({
           balanceId: balance.id,
-          amount: '100'
+          amount: '100',
+          note: 'test'
         })
         .save()
 
@@ -37,7 +38,8 @@ describe('DepositController', () => {
         deposits: [{
           id: deposit.id,
           balanceId: balance.id,
-          amount: '100'
+          amount: '100',
+          note: 'test'
         }]
       })
     })
@@ -60,14 +62,16 @@ describe('DepositController', () => {
         .post(`/deposits`)
         .send({
           balanceUniqueName: uniqueName,
-          amount: depositAmount
+          amount: depositAmount,
+          note: 'test'
         })
 
       // Then
       expect(response.body.deposit).toMatchObject({
         id: expect.any(String),
         balanceId: balance.id,
-        amount: depositAmount
+        amount: depositAmount,
+        note: 'test'
       })
 
       const deposit = await Deposit.findOne({
@@ -78,7 +82,8 @@ describe('DepositController', () => {
       expect(deposit).toMatchObject({
         id: expect.any(String),
         balanceId: balance.id,
-        amount: depositAmount
+        amount: depositAmount,
+        note: 'test'
       })
       const updatedBalance = await Balance.findOne({
         where: {

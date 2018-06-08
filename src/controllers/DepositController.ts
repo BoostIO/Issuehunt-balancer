@@ -27,7 +27,8 @@ class DepositController {
     if (error != null) throw new ValidationError()
     const {
       balanceUniqueName,
-      amount
+      amount,
+      note
     } = value
 
     const balance = await Balance.findOne({
@@ -47,7 +48,8 @@ class DepositController {
     const deposit = await Deposit
       .create({
         balanceId: balance.id,
-        amount
+        amount,
+        note
       })
       .save()
 
