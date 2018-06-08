@@ -91,7 +91,7 @@ describe('WithdrawController', () => {
     it('throws when given wrong balance unique name', async () => {
       // Given
       const uniqueName = 'A'
-      const balance = await Balance
+      await Balance
         .create({
           uniqueName,
           amount: '100'
