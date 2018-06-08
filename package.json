@@ -19,9 +19,9 @@
       "lint": "tslint -p ./tsconfig.json -c tslint.json 'src/**/*.ts'"
    },
    "license": "UNLICENSED",
-   "name": "balancetestapi",
+   "name": "balance",
    "version": "0.0.1",
-   "description": "API with TypeScript && TypeORM.",
+   "description": "Balance management server",
    "devDependencies": {
       "@types/body-parser": "^1.17.0",
       "@types/chai": "^4.1.3",
