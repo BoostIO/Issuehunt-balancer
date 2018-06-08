@@ -7,10 +7,21 @@
       "type": "git",
       "url": "https://github.com/GUIEEN/balanceTest.git"
    },
-   "license": "MIT",
-   "name": "balancetestapi",
+   "scripts": {
+      "dev": "NODE_ENV=development nodemon --exec ts-node -T src/runServer.ts",
+      "migration:create": "ts-node -T node_modules/.bin/typeorm migration:create",
+      "migration:run": "ts-node -T node_modules/.bin/typeorm migration:run",
+      "migration:revert": "ts-node -T node_modules/.bin/typeorm migration:revert",
+      "test": "NODE_ENV=test jest --config jest.json",
+      "build": "npm run clean && tsc",
+      "tsc": "npm run clean && tsc -w",
+      "clean": "rimraf build",
+      "lint": "tslint -p ./tsconfig.json -c tslint.json 'src/**/*.ts'"
+   },
+   "license": "UNLICENSED",
+   "name": "balance",
    "version": "0.0.1",
-   "description": "API with TypeScript && TypeORM.",
+   "description": "Balance management server",
    "devDependencies": {
       "@types/body-parser": "^1.17.0",
       "@types/chai": "^4.1.3",
@@ -26,7 +37,7 @@
       "chai": "^4.1.2",
       "chai-http": "^4.0.0",
       "jest": "^22.4.4",
-      "npx": "^10.2.0",
+      "nodemon": "^1.17.5",
       "rimraf": "^2.6.2",
       "routing-controllers": "^0.7.7",
       "ts-jest": "^22.4.6",
@@ -36,6 +47,7 @@
       "typescript": "2.8.3"
    },
    "dependencies": {
+      "big-integer": "^1.6.30",
       "body-parser": "^1.18.3",
       "express": "^4.16.3",
       "express-promise-router": "^3.0.2",
@@ -44,16 +56,5 @@
       "pg": "^7.4.3",
       "reflect-metadata": "^0.1.12",
       "typeorm": "0.2.6"
-   },
-   "scripts": {
-      "start": "NODE_ENV=development nodemon --exec ts-node src/runServer.ts",
-      "create-migration": "NODE_ENV=mig npx ts-node ./node_modules/.bin/typeorm migration:generate -c mig -n Test",
-      "run-migration": "NODE_ENV=mig npx ts-node ./node_modules/.bin/typeorm migration:run -c mig",
-      "revert-migration": "NODE_ENV=mig npx ts-node ./node_modules/.bin/typeorm migration:revert -c mig",
-      "start-on-mig-env": "NODE_ENV=mig nodemon --exec ts-node src/runServer.ts",
-      "test": "NODE_ENV=test jest --config jest.json",
-      "build": "npm run clean && tsc -p ./ -w",
-      "clean": "rimraf src_build",
-      "lint": "tslint -p ./tsconfig.json -c tslint.json 'src/**/*.ts'"
    }
 }

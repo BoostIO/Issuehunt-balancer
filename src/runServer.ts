@@ -1,11 +1,11 @@
 import 'reflect-metadata'
 import app from './app'
-import configuration from './lib/configuration'
-import { createTypeormConn } from './lib/database/createTypeormConn'
+import configuration from './configuration'
+import { createTypeormConnection } from './lib/database/createTypeormConnection'
 
 const runServer = async () => {
-  await createTypeormConn()
-  app.listen(configuration.port, () => console.log(`Express application is up and running on port ${configuration.port}`))
+  await createTypeormConnection()
+  app.listen(configuration.port, () => console.log(`Balancer is running on port ${configuration.port}`))
 }
 
 runServer()

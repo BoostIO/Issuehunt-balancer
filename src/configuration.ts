@@ -17,6 +17,7 @@ switch (process.env.NODE_ENV) {
 
 export default {
   nodeEnv: process.env.NODE_ENV || 'development',
-  port: process.env.PORT || 5050,
-  baseURL: process.env.BASE_URL || 'http://localhost:5050'
+  port: process.env.PORT || 3002,
+  baseURL: process.env.BASE_URL || 'http://localhost:3002',
+  dbConnectionName: process.env.DB_CONNECTION_NAME || 'default'
 }
