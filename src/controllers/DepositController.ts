@@ -1,5 +1,5 @@
 import { Transaction, TransactionManager, EntityManager } from 'typeorm'
-import { Controller, Get, Post, Body } from 'routing-controllers'
+import { Controller, Get, Post, Body, Param, NotFoundError } from 'routing-controllers'
 import Deposit from '../entities/Deposit'
 import Balance from '../entities/Balance'
 import Joi from 'joi'
@@ -17,6 +17,21 @@ class DepositController {
 
     return {
       deposits
+    }
+  }
+
+  @Get('/deposits/:depositId')
+  async show (@Param('depositId') depositId: string) {
+    const deposit = await Deposit.findOne({
+      where: {
+        id: depositId
+      }
+    })
+
+    if (deposit == null) throw new NotFoundError('The deposit does not exist.')
+
+    return {
+      deposit
     }
   }
 
