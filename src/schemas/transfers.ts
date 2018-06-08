@@ -1,4 +1,5 @@
 import Joi from 'joi'
+import { amountConstraint, uniqueNameConstraint } from './sharedConstraints'
 
 export interface TransferCreateBody {
   receiverUniqueName: string
@@ -8,8 +9,8 @@ export interface TransferCreateBody {
 }
 
 export const transferCreateBodySchema = Joi.object({
-  receiverUniqueName: Joi.string(),
-  senderUniqueName: Joi.string(),
-  amount: Joi.string().regex(/^[0-9]+$/),
+  receiverUniqueName: uniqueNameConstraint,
+  senderUniqueName: uniqueNameConstraint,
+  amount: amountConstraint,
   note: Joi.string()
 })
