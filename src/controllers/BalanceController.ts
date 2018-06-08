@@ -11,7 +11,7 @@ import {
 } from '../schemas/balances'
 
 @Controller()
-export class BalanceController {
+class BalanceController {
   @Get('/balances/:uniqueName')
   async show (@Param('uniqueName') uniqueName: string) {
     const balance = await Balance.findOne({
@@ -53,3 +53,5 @@ export class BalanceController {
     }
   }
 }
+
+export default BalanceController

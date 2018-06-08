@@ -13,7 +13,7 @@ import {
 class TransferController {
   @Get('/transfers')
   async list () {
-    const transfers: Transfer[] = await Transfer.find()
+    const transfers = await Transfer.find()
 
     return {
       transfers
