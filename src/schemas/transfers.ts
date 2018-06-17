@@ -12,5 +12,5 @@ export const transferCreateBodySchema = Joi.object({
   receiverUniqueName: uniqueNameConstraint,
   senderUniqueName: uniqueNameConstraint,
   amount: amountConstraint,
-  note: Joi.string()
+  note: Joi.string().required()
 })

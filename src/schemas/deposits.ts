@@ -10,5 +10,5 @@ export interface DepositCreateBody {
 export const depositCreateBodySchema = Joi.object({
   balanceUniqueName: uniqueNameConstraint,
   amount: amountConstraint,
-  note: Joi.string()
+  note: Joi.string().required()
 })
