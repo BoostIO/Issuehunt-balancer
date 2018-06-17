@@ -46,12 +46,18 @@ class DepositController {
       note
     } = value
 
-    const balance = await Balance.findOne({
+    let balance = await Balance.findOne({
       where: {
         uniqueName: balanceUniqueName
       }
     })
-    if (balance == null) throw new ValidationError('The balance does not exist.')
+    if (balance == null) {
+      balance = await Balance.create({
+        uniqueName: balanceUniqueName,
+        amount: '0'
+      })
+      await balance.save()
+    }
 
     try {
       await balance.increaseAmount(amount)

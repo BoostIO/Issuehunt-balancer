@@ -139,7 +139,7 @@ describe('DepositController', () => {
       expect(updatedBalance.amount).toBe('200')
     })
 
-    it('throws when given wrong balance unique name', async () => {
+    it('creates balance if it does not exist.', async () => {
       // Given
       const uniqueName = 'A'
 
@@ -149,16 +149,28 @@ describe('DepositController', () => {
         .post(`/deposits`)
         .send({
           balanceUniqueName: uniqueName,
-          amount: depositAmount
+          amount: depositAmount,
+          note: 'test'
         })
 
       // Then
-      expect(response.body).toEqual({
-        name: 'UnprocessableEntityError',
-        message: 'The balance does not exist.',
-        status: 422
+      const deposit = await Deposit.findOne({
+        where: {
+          id: response.body.deposit.id
+        }
       })
-      expect(response.status).toEqual(422)
+      expect(deposit).toMatchObject({
+        id: expect.any(String),
+        balanceId: expect.any(String),
+        amount: depositAmount,
+        note: 'test'
+      })
+      const updatedBalance = await Balance.findOne({
+        where: {
+          uniqueName
+        }
+      })
+      expect(updatedBalance.amount).toBe('100')
     })
   })
 })

@@ -43,9 +43,10 @@ class BalanceController {
     })
     if (balance != null) throw new ConflictError('The given uniqueName is already taken.')
 
-    balance = new Balance()
-    balance.uniqueName = uniqueName
-    balance.amount = amount
+    balance = Balance.create({
+      uniqueName,
+      amount
+    })
     await balance.save()
 
     return {

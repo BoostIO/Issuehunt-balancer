@@ -174,11 +174,11 @@ describe('TransferController', () => {
       expect(updatedBalanceB.amount).toBe('100')
     })
 
-    it('throws when given wrong receiver unique name', async () => {
+    it('creates receiver balance if it does not exist', async () => {
       // Given
       const uniqueNameA = 'A'
       const uniqueNameB = 'B'
-      await Balance
+      const balanceA = await Balance
         .create({
           uniqueName: uniqueNameA,
           amount: '100'
@@ -192,16 +192,34 @@ describe('TransferController', () => {
         .send({
           senderUniqueName: uniqueNameA,
           receiverUniqueName: uniqueNameB,
-          amount: transferAmount
+          amount: transferAmount,
+          note: 'test'
         })
 
       // Then
-      expect(response.body).toEqual({
-        name: 'UnprocessableEntityError',
-        message: 'The receiver does not exist.',
-        status: 422
+      const transfer = await Transfer.findOne({
+        where: {
+          id: response.body.transfer.id
+        }
       })
-      expect(response.status).toEqual(422)
+      expect(transfer).toMatchObject({
+        id: expect.any(String),
+        senderId: balanceA.id,
+        receiverId: expect.any(String),
+        amount: transferAmount
+      })
+      const updatedBalanceA = await Balance.findOne({
+        where: {
+          uniqueName: uniqueNameA
+        }
+      })
+      expect(updatedBalanceA.amount).toBe('0')
+      const updatedBalanceB = await Balance.findOne({
+        where: {
+          uniqueName: uniqueNameB
+        }
+      })
+      expect(updatedBalanceB.amount).toBe('100')
     })
 
     it('throws when given wrong sender unique name', async () => {
@@ -222,7 +240,8 @@ describe('TransferController', () => {
         .send({
           senderUniqueName: uniqueNameA,
           receiverUniqueName: uniqueNameB,
-          amount: transferAmount
+          amount: transferAmount,
+          note: 'test'
         })
 
       // Then
@@ -258,7 +277,8 @@ describe('TransferController', () => {
         .send({
           senderUniqueName: uniqueNameA,
           receiverUniqueName: uniqueNameB,
-          amount: transferAmount
+          amount: transferAmount,
+          note: 'test'
         })
 
       // Then

@@ -53,12 +53,18 @@ class TransferController {
       }
     })
     if (senderBalance == null) throw new ValidationError('The sender does not exist.')
-    const receiverBalance = await Balance.findOne({
+    let receiverBalance = await Balance.findOne({
       where: {
         uniqueName: receiverUniqueName
       }
     })
-    if (receiverBalance == null) throw new ValidationError('The receiver does not exist.')
+    if (receiverBalance == null) {
+      receiverBalance = await Balance.create({
+        uniqueName: receiverUniqueName,
+        amount: '0'
+      })
+      await receiverBalance.save()
+    }
 
     try {
       await senderBalance.decreaseAmount(amount)

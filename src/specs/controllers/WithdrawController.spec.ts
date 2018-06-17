@@ -155,7 +155,8 @@ describe('WithdrawController', () => {
         .post('/withdraws')
         .send({
           balanceUniqueName: uniqueName,
-          amount: withdrawAmount
+          amount: withdrawAmount,
+          note: 'test'
         })
 
       // Then
