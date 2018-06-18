@@ -6,6 +6,11 @@ import {
 } from '../lib/db'
 import Balance from '../../entities/Balance'
 import Withdraw from '../../entities/Withdraw'
+import configuration from '../../configuration'
+
+const defaultQuery = {
+  accessToken: configuration.accessToken
+}
 
 describe('WithdrawController', () => {
   beforeAll(prepareDB)
@@ -32,6 +37,7 @@ describe('WithdrawController', () => {
       // When
       const response = await chai.request(app)
         .get(`/withdraws/${withdraw.id}`)
+        .query(defaultQuery)
 
       // Then
       expect(response.body).toMatchObject({
@@ -51,6 +57,7 @@ describe('WithdrawController', () => {
       // When
       const response = await chai.request(app)
         .get(`/withdraws/${withdrawId}`)
+        .query(defaultQuery)
 
       // Then
       expect(response.status).toEqual(404)
@@ -78,6 +85,7 @@ describe('WithdrawController', () => {
       // When
       const response = await chai.request(app)
         .get('/withdraws')
+        .query(defaultQuery)
 
       // Then
       expect(response.body).toMatchObject({
@@ -106,6 +114,7 @@ describe('WithdrawController', () => {
       const withdrawAmount = '100'
       const response = await chai.request(app)
         .post('/withdraws')
+        .query(defaultQuery)
         .send({
           balanceUniqueName: uniqueName,
           amount: withdrawAmount,
@@ -153,6 +162,7 @@ describe('WithdrawController', () => {
       const withdrawAmount = '200'
       const response = await chai.request(app)
         .post('/withdraws')
+        .query(defaultQuery)
         .send({
           balanceUniqueName: uniqueName,
           amount: withdrawAmount,

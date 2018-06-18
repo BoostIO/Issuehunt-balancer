@@ -7,10 +7,20 @@ import DepositController from './controllers/DepositController'
 import WithdrawController from './controllers/WithdrawController'
 import ErrorHandlingMiddleware from './middlewares/ErrorHandlingMiddleware'
 import NotFoundMiddleware from './middlewares/NotFoundMiddleware'
+import configuration from './configuration'
 
 const app = Express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use((req, res, next) => {
+  if (req.query.accessToken === configuration.accessToken) {
+    next()
+  } else {
+    res.status(404).json({
+      message: 'Not Found'
+    })
+  }
+})
 
 useExpressServer(app, {
   defaultErrorHandler: false,

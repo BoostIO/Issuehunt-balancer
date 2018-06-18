@@ -6,6 +6,11 @@ import {
 } from '../lib/db'
 import Balance from '../../entities/Balance'
 import Transfer from '../../entities/Transfer'
+import configuration from '../../configuration'
+
+const defaultQuery = {
+  accessToken: configuration.accessToken
+}
 
 describe('TransferController', () => {
   beforeAll(prepareDB)
@@ -41,6 +46,7 @@ describe('TransferController', () => {
       // When
       const response = await chai.request(app)
         .get(`/transfers/${transfer.id}`)
+        .query(defaultQuery)
 
       // Then
       expect(response.body).toMatchObject({
@@ -61,6 +67,7 @@ describe('TransferController', () => {
       // When
       const response = await chai.request(app)
         .get(`/transfers/${transferId}`)
+        .query(defaultQuery)
 
       // Then
       expect(response.status).toEqual(404)
@@ -97,6 +104,7 @@ describe('TransferController', () => {
       // When
       const response = await chai.request(app)
         .get(`/transfers`)
+        .query(defaultQuery)
 
       // Then
       expect(response.body).toMatchObject({
@@ -139,6 +147,7 @@ describe('TransferController', () => {
           amount: transferAmount,
           note: 'test'
         })
+        .query(defaultQuery)
 
       // Then
       expect(response.body.transfer).toMatchObject({
@@ -189,6 +198,7 @@ describe('TransferController', () => {
       const transferAmount = '100'
       const response = await chai.request(app)
         .post(`/transfers`)
+        .query(defaultQuery)
         .send({
           senderUniqueName: uniqueNameA,
           receiverUniqueName: uniqueNameB,
@@ -237,6 +247,7 @@ describe('TransferController', () => {
       const transferAmount = '100'
       const response = await chai.request(app)
         .post(`/transfers`)
+        .query(defaultQuery)
         .send({
           senderUniqueName: uniqueNameA,
           receiverUniqueName: uniqueNameB,
@@ -274,6 +285,7 @@ describe('TransferController', () => {
       const transferAmount = '100'
       const response = await chai.request(app)
         .post(`/transfers`)
+        .query(defaultQuery)
         .send({
           senderUniqueName: uniqueNameA,
           receiverUniqueName: uniqueNameB,

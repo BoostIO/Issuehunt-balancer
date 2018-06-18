@@ -5,6 +5,11 @@ import {
   deleteAllDataFromDB
 } from '../lib/db'
 import Balance from '../../entities/Balance'
+import configuration from '../../configuration'
+
+const defaultQuery = {
+  accessToken: configuration.accessToken
+}
 
 describe('BalanceController', () => {
   beforeAll(prepareDB)
@@ -23,6 +28,7 @@ describe('BalanceController', () => {
       // When
       const response = await chai.request(app)
         .get(`/balances/${balanceUniqueName}`)
+        .query(defaultQuery)
 
       // Then
       expect(response.body).toMatchObject({
@@ -41,6 +47,7 @@ describe('BalanceController', () => {
       // When
       const response = await chai.request(app)
         .get(`/balances/${balanceUniqueName}`)
+        .query(defaultQuery)
 
       // Then
       expect(response.status).toEqual(404)
@@ -56,6 +63,7 @@ describe('BalanceController', () => {
       // When
       const response = await chai.request(app)
         .post(`/balances`)
+        .query(defaultQuery)
         .send({
           uniqueName,
           amount
@@ -86,6 +94,7 @@ describe('BalanceController', () => {
       // When
       const response = await chai.request(app)
         .post(`/balances`)
+        .query(defaultQuery)
         .send({
           uniqueName,
           amount

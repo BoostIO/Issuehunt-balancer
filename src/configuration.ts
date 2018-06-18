@@ -19,5 +19,5 @@ export default {
   nodeEnv: process.env.NODE_ENV || 'development',
   port: process.env.PORT || 3002,
   baseURL: process.env.BASE_URL || 'http://localhost:3002',
-  dbConnectionName: process.env.DB_CONNECTION_NAME || 'default'
+  accessToken: process.env.ACCESS_TOKEN || 'elided'
 }

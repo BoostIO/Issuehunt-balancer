@@ -6,6 +6,11 @@ import {
 } from '../lib/db'
 import Balance from '../../entities/Balance'
 import Deposit from '../../entities/Deposit'
+import configuration from '../../configuration'
+
+const defaultQuery = {
+  accessToken: configuration.accessToken
+}
 
 describe('DepositController', () => {
   beforeAll(prepareDB)
@@ -32,6 +37,7 @@ describe('DepositController', () => {
       // When
       const response = await chai.request(app)
         .get(`/deposits/${deposit.id}`)
+        .query(defaultQuery)
 
       // Then
       expect(response.body).toMatchObject({
@@ -51,6 +57,7 @@ describe('DepositController', () => {
       // When
       const response = await chai.request(app)
         .get(`/deposits/${depositId}`)
+        .query(defaultQuery)
 
       // Then
       expect(response.status).toEqual(404)
@@ -78,6 +85,7 @@ describe('DepositController', () => {
       // When
       const response = await chai.request(app)
         .get(`/deposits`)
+        .query(defaultQuery)
 
       // Then
       expect(response.body).toMatchObject({
@@ -111,6 +119,7 @@ describe('DepositController', () => {
           amount: depositAmount,
           note: 'test'
         })
+        .query(defaultQuery)
 
       // Then
       expect(response.body.deposit).toMatchObject({
@@ -147,6 +156,7 @@ describe('DepositController', () => {
       const depositAmount = '100'
       const response = await chai.request(app)
         .post(`/deposits`)
+        .query(defaultQuery)
         .send({
           balanceUniqueName: uniqueName,
           amount: depositAmount,
