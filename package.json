@@ -14,6 +14,7 @@
       "migration:revert": "ts-node -T node_modules/.bin/typeorm migration:revert",
       "test": "NODE_ENV=test jest --config jest.json",
       "build": "npm run clean && tsc",
+      "start": "ts-node -T src/runServer.ts",
       "tsc": "npm run clean && tsc -w",
       "clean": "rimraf build",
       "lint": "tslint -p ./tsconfig.json -c tslint.json 'src/**/*.ts'"
