@@ -1,21 +1,32 @@
 const dotenv = require('dotenv')
 
-let parsedConfig
+let parsedConfig = {
+  ...process.env
+}
 switch (process.env.NODE_ENV) {
   case 'production':
-    parsedConfig = dotenv
-      .config({
-        path: 'production.env'
-      }).parsed
+    parsedConfig = {
+      ...parsedConfig,
+      ...dotenv
+        .config({
+          path: 'production.env'
+        }).parsed
+    }
     break
   case 'test':
-    parsedConfig = dotenv
-      .config({
-        path: 'test.env'
-      }).parsed
+    parsedConfig = {
+      ...parsedConfig,
+      ...dotenv
+        .config({
+          path: 'test.env'
+        }).parsed
+    }
     break
   default:
-    parsedConfig = dotenv.config().parsed
+    parsedConfig = {
+      ...parsedConfig,
+      ...dotenv.config().parsed
+    }
 }
 
 module.exports = {
